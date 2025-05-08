@@ -16,7 +16,7 @@ import { Link } from "react-router";
 
 const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
   const theme = useTheme();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [_anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event?.currentTarget);
