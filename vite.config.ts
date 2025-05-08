@@ -3,6 +3,6 @@ import react from "@vitejs/plugin-react";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/CreaTuLanding1DiFabio",
+  base: "ndifabio92/CreaTuLanding1DiFabio",
   plugins: [react()],
 });
