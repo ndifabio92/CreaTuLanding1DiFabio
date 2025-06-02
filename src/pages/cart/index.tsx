@@ -71,7 +71,6 @@ const Cart = () => {
                       fontWeight: "medium",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
-                      display: "-webkit-box",
                       WebkitLineClamp: 2,
                       WebkitBoxOrient: "vertical",
                     }}
