@@ -6,7 +6,6 @@ import {
   Button,
   CardActions,
   CardMedia,
-  CardActionArea,
 } from "@mui/material";
 import { useNavigate } from "react-router";
 import { cardStyles } from "./card.styles";
