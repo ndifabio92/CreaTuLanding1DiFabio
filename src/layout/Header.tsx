@@ -53,9 +53,10 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
             sx={{
               fontWeight: 600,
               letterSpacing: "0.5px",
+              display: { xs: "none", sm: "block" },
             }}
           >
-            Nando Custom
+            Nando CWS
           </Typography>
         </Box>
 
