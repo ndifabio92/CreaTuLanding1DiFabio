@@ -1,4 +1,4 @@
-import { createElement, lazy, Suspense } from "react";
+import { createElement, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 import Layout from "../layout/Layout";
