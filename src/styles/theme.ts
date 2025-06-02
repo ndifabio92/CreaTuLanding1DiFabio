@@ -177,6 +177,8 @@ const theme = createTheme({
     MuiListItem: {
       styleOverrides: {
         root: {
+          width: "100% !important",
+          justifyContent: "center",
           borderRadius: 8,
           marginTop: 4,
           marginBottom: 4,

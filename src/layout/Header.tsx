@@ -9,10 +9,11 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { Menu as MenuIcon, ShoppingCartOutlined } from "@mui/icons-material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import type { AppHeaderProps } from "../types/ui/header";
 import { routes } from "../routes/routes";
 import { Link } from "react-router";
+import CartIcon from "../components/cart/CartIcon";
 
 const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
   const theme = useTheme();
@@ -103,7 +104,7 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
               },
             }}
           >
-            <ShoppingCartOutlined />
+            <CartIcon />
           </IconButton>
         </Box>
       </Toolbar>

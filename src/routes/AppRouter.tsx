@@ -1,8 +1,10 @@
-import { createElement, Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { createElement, lazy, Suspense } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 import Layout from "../layout/Layout";
 import { routes } from "./routes";
+import CartPage from "../pages/cart";
+import Products from "../pages/products";
 
 export const AppRouter = () => {
   return (
@@ -17,6 +19,9 @@ export const AppRouter = () => {
                 element={route.element && createElement(route.element)}
               />
             ))}
+            <Route path="/products/:id" element={<Products />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
       </Suspense>
