@@ -3,12 +3,11 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemText,
-  ListItemAvatar,
   Avatar,
   IconButton,
   Box,
   Button,
+  Divider,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -50,70 +49,121 @@ const Cart = () => {
           return (
             <ListItem
               key={item.id}
-              secondaryAction={
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "stretch",
+                gap: 1,
+                py: 2,
+                borderBottom: "1px solid #e0e0e0",
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Avatar
+                  src={productDetails.urls[0]}
+                  alt={productDetails.name}
+                  sx={{ width: 80, height: 80 }}
+                />
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontWeight: "medium",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                    }}
+                  >
+                    {productDetails.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {formatPrice(productDetails.price)}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mt: 1,
+                }}
+              >
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <IconButton
                     size="small"
                     onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    disabled={item.quantity <= 1}
                   >
                     <RemoveIcon />
                   </IconButton>
-                  <Typography>{item.quantity}</Typography>
+                  <Typography
+                    sx={{
+                      minWidth: "30px",
+                      textAlign: "center",
+                      fontWeight: "medium",
+                    }}
+                  >
+                    {item.quantity}
+                  </Typography>
                   <IconButton
                     size="small"
                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
                   >
                     <AddIcon />
                   </IconButton>
+                </Box>
+
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                  <Typography variant="body1" sx={{ fontWeight: "medium" }}>
+                    {formatPrice(productDetails.price * item.quantity)}
+                  </Typography>
                   <IconButton
-                    edge="end"
+                    size="small"
                     onClick={() => removeFromCart(item.id)}
                     aria-label={`Eliminar ${productDetails.name} del carrito`}
+                    color="error"
                   >
                     <DeleteIcon />
                   </IconButton>
                 </Box>
-              }
-            >
-              <ListItemAvatar>
-                <Avatar
-                  src={productDetails.urls[0]}
-                  alt={productDetails.name}
-                  sx={{ width: 80, height: 80, mr: 2 }}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary={productDetails.name}
-                secondary={
-                  <Typography component="span" variant="body2">
-                    Precio: {formatPrice(productDetails.price * item.quantity)}
-                  </Typography>
-                }
-              />
+              </Box>
             </ListItem>
           );
         })}
         {cartItems.length === 0 && (
           <ListItem>
-            <ListItemText primary="El carrito está vacío" />
+            <Typography
+              variant="body1"
+              sx={{ textAlign: "center", width: "100%" }}
+            >
+              El carrito está vacío
+            </Typography>
           </ListItem>
         )}
       </List>
+
       {cartItems.length > 0 && (
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h6" gutterBottom>
-            Total: {formatPrice(calculateTotal())}
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            fullWidth
-            sx={{ mt: 2 }}
+        <>
+          <Divider sx={{ my: 2 }} />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              mb: 2,
+            }}
           >
-            Enviar Orden
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              Total: {formatPrice(calculateTotal())}
+            </Typography>
+          </Box>
+          <Button variant="contained" color="primary" fullWidth size="large">
+            Generar Orden
           </Button>
-        </Box>
+        </>
       )}
     </Container>
   );
