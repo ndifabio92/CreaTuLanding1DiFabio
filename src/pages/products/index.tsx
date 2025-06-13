@@ -11,11 +11,11 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router";
 import { mockProducts } from "../../data/mocks";
-import { useCart } from "../../context/CartContext";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
+import { useCart } from "../../context/hooks/useCart";
 
 const Products = () => {
   const { id } = useParams<{ id: string }>();

@@ -1,8 +1,8 @@
 import { Badge, Box } from "@mui/material";
-import { useCart } from "../../context/CartContext";
 import { ShoppingCartOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import CartPopover from "../../pages/products/cartPopover";
+import { useCart } from "../../context/hooks/useCart";
 
 const CartIcon = () => {
   const { getTotalItems } = useCart();

@@ -12,8 +12,8 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useCart } from "../../context/CartContext";
 import { mockProducts } from "../../data/mocks";
+import { useCart } from "../../context/hooks/useCart";
 
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
