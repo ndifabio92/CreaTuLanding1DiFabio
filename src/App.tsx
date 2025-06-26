@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { AppRouter } from "./routes/AppRouter";
 import { ThemeProvider } from "@mui/material";
 import theme from "./styles/theme";
-import { CartProvider } from "./context/CartContext";
+import { CartProvider } from "./context/cart/CartProvider";
 
 const App: FC = () => {
   return (
