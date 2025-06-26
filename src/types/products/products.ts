@@ -1,8 +1,10 @@
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   description: string;
   price: number;
   urls: string[];
   category: string[];
+  stock: number;
+  isNew: boolean;
 }

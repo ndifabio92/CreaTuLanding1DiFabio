@@ -1,8 +1,8 @@
 import { Badge, Box } from "@mui/material";
 import { ShoppingCartOutlined } from "@mui/icons-material";
 import { useState } from "react";
-import CartPopover from "../../pages/products/cartPopover";
 import { useCart } from "../../context/hooks/useCart";
+import Cart from "../../pages/cart";
 
 const CartIcon = () => {
   const { getTotalItems } = useCart();
@@ -38,7 +38,11 @@ const CartIcon = () => {
           <ShoppingCartOutlined />
         </Badge>
       </Box>
-      <CartPopover anchorEl={anchorEl} onClose={handleClose} />
+      <Cart 
+        isPopover={true}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+      />
     </>
   );
 };

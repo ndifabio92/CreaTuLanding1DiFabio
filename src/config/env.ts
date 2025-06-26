@@ -7,6 +7,7 @@ const envSchema = z.object({
   VITE_FIREBASE_STORAGE_BUCKET: z.string().min(1),
   VITE_FIREBASE_MESSAGING_SENDER_ID: z.string().min(1),
   VITE_FIREBASE_APP_ID: z.string().min(1),
+  VITE_WHATSAPP_PHONE: z.preprocess((val) => Number(val), z.number()),
 });
 
 export const env = envSchema.parse({
@@ -17,4 +18,5 @@ export const env = envSchema.parse({
   VITE_FIREBASE_MESSAGING_SENDER_ID: import.meta.env
     .VITE_FIREBASE_MESSAGING_SENDER_ID,
   VITE_FIREBASE_APP_ID: import.meta.env.VITE_FIREBASE_APP_ID,
+  VITE_WHATSAPP_PHONE: import.meta.env.VITE_WHATSAPP_PHONE
 });

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CardComponent from "../../components/cards";
-import { productsService } from "../../services/products.services";
+import { getAllProductsFromFirestore } from "../../services/products.services";
 import { Product } from "../../types/products/products";
 import { Container, Typography, Box } from "@mui/material";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
@@ -9,13 +9,14 @@ const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await productsService.getProducts();
+        const data = await getAllProductsFromFirestore();
         setProducts(data);
         setLoading(false);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setError("Error al cargar los productos");
         setLoading(false);
@@ -54,10 +55,12 @@ const Home = () => {
       {products.map((product) => (
         <CardComponent
           key={product.id}
-          {...product}
+          id={product.id}
+          name={product.name}
           path={`/products/${product.id}`}
           image={product.urls[0]}
-          textButton="Ver"
+          stock={product.stock}
+          isNew={product.isNew}
         />
       ))}
     </Container>

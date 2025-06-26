@@ -1,0 +1,24 @@
+import { getProductByIdFromFirestore } from "../services/products.services";
+import { Product } from "../types/products/products";
+
+export const formatPrice = (price: number) => {
+  return new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+  }).format(price);
+};
+
+export const getCartItemDetails = async (itemId: string): Promise<Product | null> => {
+  return await getProductByIdFromFirestore(itemId);
+};
+
+export const calculateCartTotal = (
+  cartItems: { id: string; quantity: number }[],
+  cartProducts: Record<string, Product | null>
+): number => {
+  return cartItems.reduce((total, item) => {
+    const product = cartProducts[item.id];
+    if (!product) return total;
+    return total + product.price * item.quantity;
+  }, 0);
+}; 
