@@ -102,7 +102,7 @@ const Products = () => {
                 src={product?.urls[0]}
                 alt={product?.name}
                 style={{
-                  width: '100%',
+                  // width: '100%',
                   maxWidth: 300,
                   height: 'auto',
                   aspectRatio: '1/1',
