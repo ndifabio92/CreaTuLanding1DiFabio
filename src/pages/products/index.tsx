@@ -79,13 +79,39 @@ const Products = () => {
         <LoadingScreen />
       ) : (
         <Paper elevation={3} sx={{ p: 4 }}>
-          <Stack direction="row" spacing={4} sx={{ flexDirection: { xs: "column", sm: "row" } }}>
-            <img
-              src={product?.urls[0]}
-              alt={product?.name}
-              style={{ width: "300px", height: "300px", objectFit: "cover", margin: isMobile ? "0 auto 24px auto" : undefined }}
-            />
-            <Box sx={{ flexGrow: 1 }}>
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={4}
+            sx={{
+              alignItems: { xs: "center", sm: "flex-start" },
+              justifyContent: { xs: "center", sm: "flex-start" },
+              width: '100%',
+            }}
+          >
+            <Box
+              sx={{
+                width: { xs: '100%', sm: 300 },
+                maxWidth: 300,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                mb: { xs: 2, sm: 0 },
+              }}
+            >
+              <img
+                src={product?.urls[0]}
+                alt={product?.name}
+                style={{
+                  width: '100%',
+                  maxWidth: 300,
+                  height: 'auto',
+                  aspectRatio: '1/1',
+                  objectFit: 'cover',
+                  borderRadius: 12,
+                }}
+              />
+            </Box>
+            <Box sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }}>
               <Typography variant="h4">{product?.name}</Typography>
               <Typography variant="body1" sx={{ mt: 2 }}>
                 {product?.description}
@@ -172,8 +198,20 @@ const Products = () => {
           </Stack>
           <Divider sx={{ my: 4 }} />
           <Typography variant="h6">Categorías</Typography>
-          <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-            {product?.category.map((cat) => <Chip key={cat} label={cat} />)}
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              mt: 1,
+              flexWrap: 'wrap',
+              justifyContent: { xs: 'center', sm: 'flex-start' },
+              width: '100%',
+              gap: 1,
+            }}
+          >
+            {product?.category.map((cat) => (
+              <Chip key={cat} label={cat} />
+            ))}
           </Stack>
         </Paper>
       )}
