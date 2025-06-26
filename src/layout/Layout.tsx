@@ -3,6 +3,7 @@ import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { Outlet } from "react-router";
 import Header from "./Header";
 import { Sidebar } from "./Sidebar";
+import Footer from './Footer';
 
 const Layout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -47,7 +48,7 @@ const Layout = () => {
       >
         <Outlet />
       </Box>
-      {/* <Footer /> */}
+      <Footer />
     </Box>
   );
 };
