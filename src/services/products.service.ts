@@ -1,22 +1,13 @@
-// import { mockProducts } from "../data/mocks";
 import { Product } from "../types/products";
 import { db } from "../config/firebase/config";
-import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
-
-// MOCK
-// export const productsService = {
-//   getProducts: async (): Promise<Product[]> => {
-//     try {
-//       return new Promise((resolve) => {
-//         setTimeout(() => {
-//           resolve(mockProducts);
-//         }, 3000);
-//       });
-//     } catch (_error) {
-//       throw new Error("Error al cargar los productos");
-//     }
-//   },
-// };
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+} from "firebase/firestore";
 
 export const getAllProductsFromFirestore = async (): Promise<Product[]> => {
   const productsCol = collection(db, "products");
@@ -24,13 +15,15 @@ export const getAllProductsFromFirestore = async (): Promise<Product[]> => {
   return productsSnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  })) as Product[]
+  })) as Product[];
 };
 
-export const getProductByIdFromFirestore = async (id: string): Promise<Product | null> => {
+export const getProductByIdFromFirestore = async (
+  id: string
+): Promise<Product | null> => {
   const productDoc = doc(db, "products", id);
   const productSnap = await getDoc(productDoc);
-  
+
   if (!productSnap.exists()) return null;
   return {
     id: productSnap.id,
@@ -38,26 +31,30 @@ export const getProductByIdFromFirestore = async (id: string): Promise<Product |
   } as Product;
 };
 
-export const getProductsByBrandName = async (brandName: string): Promise<Product[]> => {
+export const getProductsByBrandName = async (
+  brandName: string
+): Promise<Product[]> => {
   const productsCol = collection(db, "products");
   const q = query(productsCol, where("brands.name", "==", brandName));
   const querySnapshot = await getDocs(q);
-  
+
   return querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Product[];
 };
 
-export const getProductsByActiveBrand = async (brandId: string): Promise<Product[]> => {
+export const getProductsByActiveBrand = async (
+  brandId: string
+): Promise<Product[]> => {
   const productsCol = collection(db, "products");
   const q = query(
-    productsCol, 
+    productsCol,
     where("brands.id", "==", brandId),
     where("brands.active", "==", true)
   );
   const querySnapshot = await getDocs(q);
-  
+
   return querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),

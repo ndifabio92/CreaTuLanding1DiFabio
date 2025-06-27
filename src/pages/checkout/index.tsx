@@ -6,8 +6,8 @@ import Cart from "../cart";
 import { useCart } from "../../hooks/useCart";
 import { generateWhatsAppMessage } from "../../shared/whatsappUtils";
 import { getCartItemDetails } from "../../shared/cartUtils";
-import { CartProductWithQuantity } from "../../shared/whatsappUtils";
 import { useState, useEffect } from "react";
+import { CartProductWithQuantity } from "../../types/app/whatsAppMessage";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Requerido"),
@@ -40,7 +40,7 @@ const Checkout = () => {
           products.push({ product, quantity: item.quantity });
         }
       }
-      setCartProducts(products);      
+      setCartProducts(products);
     };
     if (cartItems.length > 0) {
       fetchProducts();
@@ -51,7 +51,7 @@ const Checkout = () => {
   }, [cartItems]);
 
   return (
-    <Container sx={{ pb: 4}}>
+    <Container sx={{ pb: 4 }}>
       <Box
         sx={{
           display: "flex",
