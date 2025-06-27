@@ -102,195 +102,197 @@ const Cart = ({
   };
 
   const renderCartContent = () => (
-    <Box sx={{ pb: 0 }}>
-      {!isCheckout && !isPopover && <BackBreadcrumb/>}
-      <Typography variant="h5" gutterBottom>
-        {isCheckout ? "Detalle de la Orden" : "Carrito de Compras"}
-      </Typography>
-      {loadingToUse ? (
-        <LoadingScreen />
-      ) : (
-        <List sx={isPopover ? { maxHeight: 300, overflow: "auto" } : undefined}>
-          {cartItems.map((item) => {
-            const productDetails = productsToUse[item.id];
-            if (!productDetails) return null;
+    <Container sx={{ pb: 4}}>
+      <Box>
+        {!isCheckout && !isPopover && <BackBreadcrumb/>}
+        <Typography variant="h5" gutterBottom>
+          {isCheckout ? "Detalle de la Orden" : "Carrito de Compras"}
+        </Typography>
+        {loadingToUse ? (
+          <LoadingScreen />
+        ) : (
+          <List sx={isPopover ? { maxHeight: 300, overflow: "auto" } : undefined}>
+            {cartItems.map((item) => {
+              const productDetails = productsToUse[item.id];
+              if (!productDetails) return null;
 
-            return (
-              <ListItem
-                key={item.id}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "stretch",
-                  gap: 2,
-                  py: 2,
-                  borderBottom: "1px solid #e0e0e0",
-                }}
-              >
-                {/* Información del producto */}
-                <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
-                  <Avatar
-                    src={
-                      productDetails.urls && productDetails.urls.length > 0
-                        ? productDetails.urls[0]
-                        : ""
-                    }
-                    alt={productDetails.name || "Producto"}
-                    sx={{
-                      width: isPopover ? 50 : 80,
-                      height: isPopover ? 50 : 80,
-                      flexShrink: 0,
-                    }}
-                  />
-                  <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Typography
-                      variant={isPopover ? "body2" : "body1"}
-                      sx={{
-                        fontWeight: "medium",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        textTransform: "capitalize",
-                        mb: 0.5,
-                      }}
-                    >
-                      {productDetails.name.toLowerCase()}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {formatPrice(productDetails.price)}
-                    </Typography>
-                  </Box>
-                </Box>
-
-                {/* Controles distribuidos en toda la card */}
-                <Box
+              return (
+                <ListItem
+                  key={item.id}
                   sx={{
                     display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    width: "100%",
+                    flexDirection: "column",
+                    alignItems: "stretch",
                     gap: 2,
+                    py: 2,
+                    borderBottom: "1px solid #e0e0e0",
                   }}
                 >
-                  {/* Controles de cantidad */}
+                  {/* Información del producto */}
+                  <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
+                    <Avatar
+                      src={
+                        productDetails.urls && productDetails.urls.length > 0
+                          ? productDetails.urls[0]
+                          : ""
+                      }
+                      alt={productDetails.name || "Producto"}
+                      sx={{
+                        width: isPopover ? 50 : 80,
+                        height: isPopover ? 50 : 80,
+                        flexShrink: 0,
+                      }}
+                    />
+                    <Box sx={{ flex: 1, minWidth: 0 }}>
+                      <Typography
+                        variant={isPopover ? "body2" : "body1"}
+                        sx={{
+                          fontWeight: "medium",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          textTransform: "capitalize",
+                          mb: 0.5,
+                        }}
+                      >
+                        {productDetails.name.toLowerCase()}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {formatPrice(productDetails.price)}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  {/* Controles distribuidos en toda la card */}
                   <Box
                     sx={{
                       display: "flex",
+                      justifyContent: "space-between",
                       alignItems: "center",
-                      gap: 1,
-                      flex: "0 0 auto",
+                      width: "100%",
+                      gap: 2,
                     }}
                   >
-                    <IconButton
-                      size="small"
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      disabled={item.quantity <= 1}
-                    >
-                      <RemoveIcon fontSize="small" />
-                    </IconButton>
-                    <Typography
+                    {/* Controles de cantidad */}
+                    <Box
                       sx={{
-                        minWidth: "40px",
-                        textAlign: "center",
-                        fontWeight: "medium",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        flex: "0 0 auto",
                       }}
                     >
-                      {item.quantity}
-                    </Typography>
-                    <IconButton
-                      size="small"
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    >
-                      <AddIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
+                      <IconButton
+                        size="small"
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        disabled={item.quantity <= 1}
+                      >
+                        <RemoveIcon fontSize="small" />
+                      </IconButton>
+                      <Typography
+                        sx={{
+                          minWidth: "40px",
+                          textAlign: "center",
+                          fontWeight: "medium",
+                        }}
+                      >
+                        {item.quantity}
+                      </Typography>
+                      <IconButton
+                        size="small"
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
 
-                  {/* Botón eliminar */}
-                  <Box sx={{ flex: 1, textAlign: "center" }}>
-                    <IconButton
-                      size="small"
-                      onClick={() => removeFromCart(item.id)}
-                      aria-label={`Eliminar ${productDetails.name} del carrito`}
-                      sx={{
-                        color: "error.light",
-                        backgroundColor: "error.50",
-                        "&:hover": {
-                          backgroundColor: "error.100",
-                          color: "error.main",
-                        },
-                      }}
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
+                    {/* Botón eliminar */}
+                    <Box sx={{ flex: 1, textAlign: "center" }}>
+                      <IconButton
+                        size="small"
+                        onClick={() => removeFromCart(item.id)}
+                        aria-label={`Eliminar ${productDetails.name} del carrito`}
+                        sx={{
+                          color: "error.light",
+                          backgroundColor: "error.50",
+                          "&:hover": {
+                            backgroundColor: "error.100",
+                            color: "error.main",
+                          },
+                        }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
 
-                  {/* Precio total del item */}
-                  <Box sx={{ flex: "0 0 auto" }}>
-                    <Typography
-                      variant={isPopover ? "body2" : "body1"}
-                      sx={{
-                        fontWeight: "bold",
-                        color: "primary.main",
-                        fontSize: isPopover ? "0.875rem" : "1.1rem",
-                      }}
-                    >
-                      {formatPrice(productDetails.price * item.quantity)}
-                    </Typography>
+                    {/* Precio total del item */}
+                    <Box sx={{ flex: "0 0 auto" }}>
+                      <Typography
+                        variant={isPopover ? "body2" : "body1"}
+                        sx={{
+                          fontWeight: "bold",
+                          color: "primary.main",
+                          fontSize: isPopover ? "0.875rem" : "1.1rem",
+                        }}
+                      >
+                        {formatPrice(productDetails.price * item.quantity)}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
+                </ListItem>
+              );
+            })}
+            {cartItems.length === 0 && (
+              <ListItem>
+                {isPopover ? (
+                  <ListItemText
+                    primary="El carrito está vacío"
+                    sx={{ textAlign: "center" }}
+                  />
+                ) : (
+                  <Typography
+                    variant="body1"
+                    sx={{ textAlign: "center", width: "100%" }}
+                  >
+                    El carrito está vacío
+                  </Typography>
+                )}
               </ListItem>
-            );
-          })}
-          {cartItems.length === 0 && (
-            <ListItem>
-              {isPopover ? (
-                <ListItemText
-                  primary="El carrito está vacío"
-                  sx={{ textAlign: "center" }}
-                />
-              ) : (
-                <Typography
-                  variant="body1"
-                  sx={{ textAlign: "center", width: "100%" }}
-                >
-                  El carrito está vacío
-                </Typography>
-              )}
-            </ListItem>
-          )}
-        </List>
-      )}
+            )}
+          </List>
+        )}
 
-      {cartItems.length > 0 && !loadingToUse && (
-        <>
-          <Divider sx={{ my: 2 }} />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              mb: 2,
-            }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-              Total: {formatPrice(calculateTotal())}
-            </Typography>
-          </Box>
-          {!isCheckout && (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleCheckout}
-              fullWidth
-              size="large"
+        {cartItems.length > 0 && !loadingToUse && (
+          <>
+            <Divider sx={{ my: 2 }} />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                mb: 2,
+              }}
             >
-              {isPopover ? "Generar Orden" : "Ir al Checkout"}
-            </Button>
-          )}
-        </>
-      )}
-    </Box>
+              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                Total: {formatPrice(calculateTotal())}
+              </Typography>
+            </Box>
+            {!isCheckout && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleCheckout}
+                fullWidth
+                size="large"
+              >
+                {isPopover ? "Generar Orden" : "Ir al Checkout"}
+              </Button>
+            )}
+          </>
+        )}
+      </Box>
+    </Container>
   );
 
   if (isPopover) {
