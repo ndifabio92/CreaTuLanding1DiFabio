@@ -1,4 +1,4 @@
-import { useState, type FC, type MouseEvent } from "react";
+import { useState, type FC, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -12,15 +12,25 @@ import {
 import { Menu as MenuIcon } from "@mui/icons-material";
 import type { AppHeaderProps } from "../types/ui/header";
 import { routes } from "../routes/routes";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import CartIcon from "../components/cart/CartIcon";
+import { getAllBrandsFromFirestore } from "../services/brands.service";
+import { Brands } from "../types/brands";
+import MenuDropdown from "../components/menu/MenuDropdown";
 
 const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
   const theme = useTheme();
-  const [_anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [brands, setBrands] = useState<Brands[]>([]);
+  const navigate = useNavigate();
 
-  const handleMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event?.currentTarget);
+  useEffect(() => {
+    getAllBrandsFromFirestore().then((data: Brands[]) => {
+      setBrands(data.filter((b) => b.active));
+    });
+  }, []);
+
+  const handleBrandClick = (brandName: string) => {
+    navigate(`/brands?brand=${encodeURIComponent(brandName)}`);
   };
 
   return (
@@ -69,24 +79,37 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
           }}
         >
           <List sx={{ display: "flex", gap: 2 }}>
-            {routes.map((item) => (
-              <ListItem
-                key={item.path}
-                component={Link}
-                to={item.path}
-                sx={{
-                  borderRadius: 1,
-                  color: "white",
-                  cursor: "pointer",
-                  padding: "8px 16px",
-                  "&:hover": {
-                    backgroundColor: "rgba(212, 14, 14, 0.1)",
-                  },
-                }}
-              >
-                {item.name}
-              </ListItem>
-            ))}
+            {routes.map((item) => {
+              if (item.name === "Marcas") {
+                return (
+                  <MenuDropdown
+                    key={item.path}
+                    label={item.name}
+                    items={brands.map(b => ({ id: b.id, name: b.name }))}
+                    basePath={item.path}
+                    onItemClick={(brand) => handleBrandClick(brand.name)}
+                  />
+                );
+              }
+              return (
+                <ListItem
+                  key={item.path}
+                  component={Link}
+                  to={item.path}
+                  sx={{
+                    borderRadius: 1,
+                    color: "white",
+                    cursor: "pointer",
+                    padding: "8px 16px",
+                    "&:hover": {
+                      backgroundColor: "rgba(212, 14, 14, 0.1)",
+                    },
+                  }}
+                >
+                  {item.name}
+                </ListItem>
+              );
+            })}
           </List>
         </Box>
 
@@ -96,7 +119,6 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
             aria-label="cuenta del usuario"
             aria-controls="menu-appbar"
             aria-haspopup="true"
-            onClick={handleMenu}
             color="inherit"
             sx={{
               transition: "transform 0.2s",

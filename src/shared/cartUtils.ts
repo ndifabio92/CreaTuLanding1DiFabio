@@ -1,5 +1,5 @@
-import { getProductByIdFromFirestore } from "../services/products.services";
-import { Product } from "../types/products/products";
+import { getProductByIdFromFirestore } from "../services/products.service";
+import { Product } from "../types/products";
 
 export const formatPrice = (price: number) => {
   return new Intl.NumberFormat("es-AR", {

@@ -1,15 +1,17 @@
-import { type FC } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { type FC, useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
 import {
   Box,
   Drawer,
   List,
   ListItem,
   ListItemText,
-  Typography,
 } from "@mui/material";
 import type { SidebarProps } from "../types/ui/sidebar";
 import { routes } from "../routes/routes";
+import { getAllBrandsFromFirestore } from "../services/brands.service";
+import { Brands } from "../types/brands";
+import MenuDropdown from "../components/menu/MenuDropdown";
 
 export const Sidebar: FC<SidebarProps> = ({
   mobileOpen,
@@ -18,6 +20,15 @@ export const Sidebar: FC<SidebarProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [brands, setBrands] = useState<Brands[]>([]);
+  const [brandsOpen, setBrandsOpen] = useState(false);
+
+  useEffect(() => {
+    getAllBrandsFromFirestore().then((data: Brands[]) => {
+      setBrands(data.filter((b) => b.active));
+    });
+  }, []);
 
   const isActive = (path: string) => {
     if (path === "/") {
@@ -54,39 +65,51 @@ export const Sidebar: FC<SidebarProps> = ({
       </Box>
       <Box sx={{ p: 2, flexGrow: 1, padding: "0 !important" }}>
         <List sx={{ mt: 1 }}>
-          {routes.map((item) => (
-            <ListItem
-              key={item.path}
-              component={Link}
-              to={item.path}
-              onClick={handleDrawerToggle}
-              sx={{
-                padding: "16px !important",
-                borderRadius: 1,
-                mb: 1,
-                backgroundColor: isActive(item.path)
-                  ? "rgba(0, 92, 120, 0.08)"
-                  : "transparent",
-                color: isActive(item.path) ? "primary.100" : "text.primary",
-                cursor: "pointer",
-                "&:hover": {
-                  backgroundColor: "rgba(0, 92, 120, 0.08)",
-                },
-              }}
-            >
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="body2"
-                    fontWeight={isActive(item.path) ? 600 : 500}
-                    color={isActive(item.path) ? "primary.100" : "inherit"}
-                  >
-                    {item.name}
-                  </Typography>
-                }
-              />
-            </ListItem>
-          ))}
+          {routes.map((item) => {
+            if (item.name === "Marcas") {
+              return (
+                <MenuDropdown
+                  key={item.path}
+                  label={item.name}
+                  items={brands.map(b => ({ id: b.id, name: b.name }))}
+                  basePath={item.path}
+                  isSidebar
+                  isActive={isActive(item.path)}
+                  open={brandsOpen}
+                  setOpen={setBrandsOpen}
+                  handleDrawerToggle={handleDrawerToggle}
+                  onItemClick={(brand) => {
+                    navigate(`/brands?brand=${encodeURIComponent(brand.name)}`);
+                    handleDrawerToggle();
+                  }}
+                  paramKey="brand"
+                />
+              );
+            }
+            return (
+              <ListItem
+                key={item.path}
+                onClick={() => {
+                  navigate(item.path);
+                  handleDrawerToggle();
+                }}
+                sx={{
+                  borderRadius: 1,
+                  color: isActive(item.path) ? "primary.main" : "inherit",
+                  fontWeight: isActive(item.path) ? 700 : 500,
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  transition: 'background 0.2s',
+                  p: '16px !important',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0,0,0,0.04)',
+                  },
+                }}
+              >
+                <ListItemText primary={item.name} />
+              </ListItem>
+            );
+          })}
         </List>
       </Box>
     </Box>

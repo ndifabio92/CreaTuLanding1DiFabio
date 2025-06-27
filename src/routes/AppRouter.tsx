@@ -5,6 +5,7 @@ import LoadingScreen from "../components/loadingScreen/LoadingScreen";
 import Layout from "../layout/Layout";
 import CartPage from "../pages/cart";
 import Products from "../pages/products";
+import Checkout from "../pages/checkout";
 
 export const AppRouter = () => {
   return (
@@ -21,6 +22,7 @@ export const AppRouter = () => {
             ))}
             <Route path="/products/:id" element={<Products />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<Checkout />} />
             
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>

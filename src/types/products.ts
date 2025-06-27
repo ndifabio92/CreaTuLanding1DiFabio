@@ -1,3 +1,5 @@
+import { Brands } from "./brands";
+
 export interface Product {
   id: string;
   name: string;
@@ -7,4 +9,5 @@ export interface Product {
   category: string[];
   stock: number;
   isNew: boolean;
+  brands: Brands;
 }

@@ -1,4 +1,4 @@
-import { Product } from "../products/products";
+import { Product } from "../products";
 
 export interface WhatsAppMessage {
     name: string;

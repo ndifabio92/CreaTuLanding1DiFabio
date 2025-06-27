@@ -52,6 +52,7 @@ const CardComponent: React.FC<Props> = ({ id, name, path, image, stock, isNew })
         </Typography>
       </CardContent>
       <CardMedia
+        onClick={() => navigate(path)}
         component="img"
         image={image}
         title={name}
