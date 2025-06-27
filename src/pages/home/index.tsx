@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import CardComponent from "../../components/cards";
+import CardComponent from "../../components/cards/CardComponent";
 import { getAllProductsFromFirestore } from "../../services/products.services";
 import { Product } from "../../types/products/products";
 import { Container, Typography, Box } from "@mui/material";

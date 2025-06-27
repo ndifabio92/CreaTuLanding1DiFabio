@@ -1,9 +1,10 @@
 import type { FC } from "react";
 import { AppRouter } from "./routes/AppRouter";
 import { ThemeProvider } from "@mui/material";
+import { ToastProvider } from "./components/providers/ToastProvider";
+import { CartProvider } from "./components/providers/CartProvider";
 import theme from "./styles/theme";
-import { CartProvider } from "./context/cart/CartProvider";
-import { ToastProvider } from "./context/toast/ToastProvider";
+
 
 const App: FC = () => {
   return (

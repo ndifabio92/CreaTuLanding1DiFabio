@@ -16,11 +16,13 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useEffect, useState } from "react";
-import { useCart } from "../../context/hooks/useCart";
+import { useCart } from "../../hooks/useCart";
 import { Product } from "../../types/products/products";
 import { getProductByIdFromFirestore } from "../../services/products.services";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 import { formatPrice } from "../../shared/cartUtils";
+import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
+import ImageCarousel from "../../components/carousel/ImageCarousel";
 
 const Products = () => {
   const { addToCart } = useCart();
@@ -74,7 +76,8 @@ const Products = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ pb: 4 }}>
+      <BackBreadcrumb/>
       {loading ? (
         <LoadingScreen />
       ) : (
@@ -98,17 +101,12 @@ const Products = () => {
                 mb: { xs: 2, sm: 0 },
               }}
             >
-              <img
-                src={product?.urls[0]}
-                alt={product?.name}
-                style={{
-                  // width: '100%',
-                  maxWidth: 300,
-                  height: 'auto',
-                  aspectRatio: '1/1',
-                  objectFit: 'cover',
-                  borderRadius: 12,
-                }}
+              <ImageCarousel
+                images={product?.urls || []}
+                altText={product?.name || 'Product image'}
+                maxWidth={300}
+                aspectRatio="1/1"
+                borderRadius={12}
               />
             </Box>
             <Box sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }}>
