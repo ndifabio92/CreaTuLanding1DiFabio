@@ -34,10 +34,19 @@ interface CartProps {
   externalLoading?: boolean;
 }
 
-const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, externalCartProducts, externalLoading }: CartProps) => {
+const Cart = ({
+  isPopover = false,
+  isCheckout = false,
+  anchorEl,
+  onClose,
+  externalCartProducts,
+  externalLoading,
+}: CartProps) => {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
   const navigate = useNavigate();
-  const [cartProducts, setCartProducts] = useState<Record<string, Product | null>>({});
+  const [cartProducts, setCartProducts] = useState<
+    Record<string, Product | null>
+  >({});
   const [loading, setLoading] = useState(false);
 
   const open = isPopover ? Boolean(anchorEl) : false;
@@ -51,7 +60,7 @@ const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, extern
     const fetchProducts = async () => {
       setLoading(true);
       const productsMap: Record<string, Product | null> = { ...cartProducts };
-      const missingIds = cartItems.filter(item => !productsMap[item.id]);
+      const missingIds = cartItems.filter((item) => !productsMap[item.id]);
       await Promise.all(
         missingIds.map(async (item) => {
           const product = await getCartItemDetails(item.id);
@@ -59,8 +68,8 @@ const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, extern
         })
       );
 
-      Object.keys(productsMap).forEach(id => {
-        if (!cartItems.find(item => item.id === id)) {
+      Object.keys(productsMap).forEach((id) => {
+        if (!cartItems.find((item) => item.id === id)) {
           delete productsMap[id];
         }
       });
@@ -82,16 +91,16 @@ const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, extern
       onClose();
       navigate("/cart");
     }
-    
-    if(!isPopover) {
+
+    if (!isPopover) {
       navigate("/checkout");
     }
   };
 
   const renderCartContent = () => (
     <>
-      <Typography variant={isPopover ? "h6" : "h4"} gutterBottom>
-        {isCheckout ? 'Detalle de la Orden' : "Carrito de Compras"}
+      <Typography variant="h5" gutterBottom>
+        {isCheckout ? "Detalle de la Orden" : "Carrito de Compras"}
       </Typography>
       {loadingToUse ? (
         <LoadingScreen />
@@ -108,12 +117,13 @@ const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, extern
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "stretch",
-                  gap: 1,
+                  gap: 2,
                   py: 2,
                   borderBottom: "1px solid #e0e0e0",
                 }}
               >
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                {/* Información del producto */}
+                <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
                   <Avatar
                     src={
                       productDetails.urls && productDetails.urls.length > 0
@@ -124,6 +134,7 @@ const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, extern
                     sx={{
                       width: isPopover ? 50 : 80,
                       height: isPopover ? 50 : 80,
+                      flexShrink: 0,
                     }}
                   />
                   <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -136,9 +147,11 @@ const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, extern
                         display: "-webkit-box",
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: "vertical",
+                        textTransform: "capitalize",
+                        mb: 0.5,
                       }}
                     >
-                      {productDetails.name}
+                      {productDetails.name.toLowerCase()}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       {formatPrice(productDetails.price)}
@@ -146,25 +159,35 @@ const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, extern
                   </Box>
                 </Box>
 
+                {/* Controles distribuidos en toda la card */}
                 <Box
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    mt: 1,
+                    width: "100%",
+                    gap: 2,
                   }}
                 >
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  {/* Controles de cantidad */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      flex: "0 0 auto",
+                    }}
+                  >
                     <IconButton
                       size="small"
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       disabled={item.quantity <= 1}
                     >
-                      <RemoveIcon />
+                      <RemoveIcon fontSize="small" />
                     </IconButton>
                     <Typography
                       sx={{
-                        minWidth: "30px",
+                        minWidth: "40px",
                         textAlign: "center",
                         fontWeight: "medium",
                       }}
@@ -175,25 +198,41 @@ const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, extern
                       size="small"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     >
-                      <AddIcon />
+                      <AddIcon fontSize="small" />
                     </IconButton>
                   </Box>
 
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                    <Typography
-                      variant={isPopover ? "body2" : "body1"}
-                      sx={{ fontWeight: "medium" }}
-                    >
-                      {formatPrice(productDetails.price * item.quantity)}
-                    </Typography>
+                  {/* Botón eliminar */}
+                  <Box sx={{ flex: 1, textAlign: "center" }}>
                     <IconButton
                       size="small"
                       onClick={() => removeFromCart(item.id)}
                       aria-label={`Eliminar ${productDetails.name} del carrito`}
-                      color="error"
+                      sx={{
+                        color: "error.main",
+                        backgroundColor: "error.50",
+                        "&:hover": {
+                          backgroundColor: "error.100",
+                          color: "error.dark",
+                        },
+                      }}
                     >
-                      <DeleteIcon />
+                      <DeleteIcon fontSize="small" />
                     </IconButton>
+                  </Box>
+
+                  {/* Precio total del item */}
+                  <Box sx={{ flex: "0 0 auto" }}>
+                    <Typography
+                      variant={isPopover ? "body2" : "body1"}
+                      sx={{
+                        fontWeight: "bold",
+                        color: "primary.main",
+                        fontSize: isPopover ? "0.875rem" : "1.1rem",
+                      }}
+                    >
+                      {formatPrice(productDetails.price * item.quantity)}
+                    </Typography>
                   </Box>
                 </Box>
               </ListItem>
@@ -233,19 +272,17 @@ const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, extern
               Total: {formatPrice(calculateTotal())}
             </Typography>
           </Box>
-          {
-            !isCheckout && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleCheckout}
-                fullWidth
-                size="large"
-              >
-                {isPopover ? "Generar Orden" : "Ir al Checkout"}
-              </Button>
-            )
-          }
+          {!isCheckout && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleCheckout}
+              fullWidth
+              size="large"
+            >
+              {isPopover ? "Generar Orden" : "Ir al Checkout"}
+            </Button>
+          )}
         </>
       )}
     </>
@@ -274,11 +311,7 @@ const Cart = ({ isPopover = false, isCheckout = false, anchorEl, onClose, extern
     );
   }
 
-  return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      {renderCartContent()}
-    </Container>
-  );
+  return <Container>{renderCartContent()}</Container>;
 };
 
 export default Cart;

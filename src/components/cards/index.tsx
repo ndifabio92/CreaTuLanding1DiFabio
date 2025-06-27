@@ -13,6 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useCart } from "../../context/hooks/useCart";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 interface Props {
   id: string;
@@ -47,7 +48,7 @@ const CardComponent: React.FC<Props> = ({ id, name, path, image, stock, isNew })
           </div>
         )}
         <Typography variant="h5" component="div">
-          {name}
+          {name.toLowerCase()}
         </Typography>
       </CardContent>
       <CardMedia
@@ -71,10 +72,11 @@ const CardComponent: React.FC<Props> = ({ id, name, path, image, stock, isNew })
         {
           stock > 0 && (
           <Button
-            variant="outlined"
+            variant="contained"
             color="primary"
+            startIcon={<ShoppingCartIcon />}
             onClick={() => addToCart(id, 1)}>
-            ADD TO CART
+            Add To Cart
           </Button>
           )
         }

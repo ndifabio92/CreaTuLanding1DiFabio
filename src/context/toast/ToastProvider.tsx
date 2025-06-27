@@ -1,0 +1,18 @@
+import { FC } from "react";
+import { Toaster, toast } from "sonner";
+import { ToastContext } from "./ToastContext";
+import { ToastProviderProps } from "../../types/ui/toast";
+
+export const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
+  const success = (message: string) => toast.success(message);
+  const error = (message: string) => toast.error(message);
+  const info = (message: string) => toast.info(message);
+  const warning = (message: string) => toast.warning(message);
+
+  return (
+    <ToastContext.Provider value={{ success, error, info, warning }}>
+      <Toaster position="bottom-right" richColors expand={true} />
+      {children}
+    </ToastContext.Provider>
+  );
+};

@@ -9,14 +9,14 @@ const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const data = await getAllProductsFromFirestore();
         setProducts(data);
         setLoading(false);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setError("Error al cargar los productos");
         setLoading(false);
@@ -32,7 +32,7 @@ const Home = () => {
 
   if (error) {
     return (
-      <Container>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box sx={{ textAlign: "center", mt: 4 }}>
           <Typography color="error" variant="h5">
             {error}
@@ -49,7 +49,7 @@ const Home = () => {
         flexWrap: "wrap",
         justifyContent: "center",
         gap: 2,
-        py: 4,
+        // py: 4,
       }}
     >
       {products.map((product) => (
