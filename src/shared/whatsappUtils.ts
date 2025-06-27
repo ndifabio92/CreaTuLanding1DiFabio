@@ -2,7 +2,7 @@
 
 import { env } from "../config/env";
 import { WhatsAppMessage } from "../types/app/whatsAppMessage";
-import { Product } from "../types/products/products";
+import { Product } from "../types/products";
 
 /**
  * Abre WhatsApp con un mensaje predefinido

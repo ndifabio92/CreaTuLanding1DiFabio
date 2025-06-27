@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useToast } from "../../hooks/useToast";
-import { CartContext } from "../../context/CartContext";
+import { useToast } from "../hooks/useToast";
+import { CartContext } from "../context/CartContext";
 
 interface CartItem {
   id: string;

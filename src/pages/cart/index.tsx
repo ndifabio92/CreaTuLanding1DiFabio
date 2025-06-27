@@ -24,7 +24,7 @@ import {
   formatPrice,
   calculateCartTotal,
 } from "../../shared/cartUtils";
-import { Product } from "../../types/products/products";
+import { Product } from "../../types/products";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
 

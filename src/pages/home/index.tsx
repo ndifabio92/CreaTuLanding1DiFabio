@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CardComponent from "../../components/cards/CardComponent";
-import { getAllProductsFromFirestore } from "../../services/products.services";
-import { Product } from "../../types/products/products";
+import { getAllProductsFromFirestore } from "../../services/products.service";
+import { Product } from "../../types/products";
 import { Container, Typography, Box } from "@mui/material";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 
