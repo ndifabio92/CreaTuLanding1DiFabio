@@ -151,7 +151,7 @@ const Products = () => {
                       onClick={() => product?.id && handleAddToCart(product.id)}
                       disabled={!product}
                     >
-                      {/* Solo ícono en mobile */}
+                      Add
                     </Button>
                   </Box>
                 </Stack>

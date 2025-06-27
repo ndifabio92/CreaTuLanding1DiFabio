@@ -209,11 +209,11 @@ const Cart = ({
                       onClick={() => removeFromCart(item.id)}
                       aria-label={`Eliminar ${productDetails.name} del carrito`}
                       sx={{
-                        color: "error.main",
+                        color: "error.light",
                         backgroundColor: "error.50",
                         "&:hover": {
                           backgroundColor: "error.100",
-                          color: "error.dark",
+                          color: "error.main",
                         },
                       }}
                     >

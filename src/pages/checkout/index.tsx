@@ -6,7 +6,6 @@ import Cart from "../cart";
 import { useCart } from "../../context/hooks/useCart";
 import { generateWhatsAppMessage } from "../../shared/whatsappUtils";
 import { getCartItemDetails } from "../../shared/cartUtils";
-// import { Product } from '../../types/products/products';
 import { CartProductWithQuantity } from "../../shared/whatsappUtils";
 import { useState, useEffect } from "react";
 
@@ -41,14 +40,14 @@ const Checkout = () => {
           products.push({ product, quantity: item.quantity });
         }
       }
-      setCartProducts(products);
-      setLoading(false);
+      setCartProducts(products);      
     };
     if (cartItems.length > 0) {
       fetchProducts();
     } else {
       setCartProducts([]);
     }
+    setLoading(false);
   }, [cartItems]);
 
   return (
