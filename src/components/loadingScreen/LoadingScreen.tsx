@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 const LoadingScreen = () => {
   return (
     <Box
@@ -12,9 +12,9 @@ const LoadingScreen = () => {
       }}
     >
       <CircularProgress size={60} thickness={4} />
-      <Typography variant="h6" sx={{ mt: 2, color: "text.secondary" }}>
+      {/* <Typography variant="h6" sx={{ mt: 2, color: "text.secondary" }}>
         Cargando...
-      </Typography>
+      </Typography> */}
     </Box>
   );
 };
