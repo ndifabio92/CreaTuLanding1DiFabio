@@ -52,7 +52,7 @@ export const Sidebar: FC<SidebarProps> = ({
           }}
         ></Box>
       </Box>
-      <Box sx={{ p: 2, flexGrow: 1 }}>
+      <Box sx={{ p: 2, flexGrow: 1, padding: "0 !important" }}>
         <List sx={{ mt: 1 }}>
           {routes.map((item) => (
             <ListItem
@@ -61,6 +61,7 @@ export const Sidebar: FC<SidebarProps> = ({
               to={item.path}
               onClick={handleDrawerToggle}
               sx={{
+                padding: "16px !important",
                 borderRadius: 1,
                 mb: 1,
                 backgroundColor: isActive(item.path)

@@ -1,7 +1,7 @@
 import { Badge, Box } from "@mui/material";
 import { ShoppingCartOutlined } from "@mui/icons-material";
 import { useState } from "react";
-import { useCart } from "../../context/hooks/useCart";
+import { useCart } from "../../hooks/useCart";
 import Cart from "../../pages/cart";
 
 const CartIcon = () => {

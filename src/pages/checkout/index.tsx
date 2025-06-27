@@ -3,7 +3,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import WhatsAppButton from "../../components/whastApp/WhatsAppButton";
 import Cart from "../cart";
-import { useCart } from "../../context/hooks/useCart";
+import { useCart } from "../../hooks/useCart";
 import { generateWhatsAppMessage } from "../../shared/whatsappUtils";
 import { getCartItemDetails } from "../../shared/cartUtils";
 import { CartProductWithQuantity } from "../../shared/whatsappUtils";
@@ -51,7 +51,7 @@ const Checkout = () => {
   }, [cartItems]);
 
   return (
-    <Container>
+    <Container sx={{ pb: 4}}>
       <Box
         sx={{
           display: "flex",

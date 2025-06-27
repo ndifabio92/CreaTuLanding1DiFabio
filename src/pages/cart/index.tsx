@@ -11,12 +11,14 @@ import {
   IconButton,
   Button,
   Divider,
+  Dialog,
+  useMediaQuery,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router";
-import { useCart } from "../../context/hooks/useCart";
+import { useCart } from "../../hooks/useCart";
 import {
   getCartItemDetails,
   formatPrice,
@@ -24,6 +26,7 @@ import {
 } from "../../shared/cartUtils";
 import { Product } from "../../types/products/products";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
+import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
 
 interface CartProps {
   isPopover?: boolean;
@@ -48,6 +51,7 @@ const Cart = ({
     Record<string, Product | null>
   >({});
   const [loading, setLoading] = useState(false);
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const open = isPopover ? Boolean(anchorEl) : false;
 
@@ -98,7 +102,8 @@ const Cart = ({
   };
 
   const renderCartContent = () => (
-    <>
+    <Box sx={{ pb: 0 }}>
+      {!isCheckout && !isPopover && <BackBreadcrumb/>}
       <Typography variant="h5" gutterBottom>
         {isCheckout ? "Detalle de la Orden" : "Carrito de Compras"}
       </Typography>
@@ -285,10 +290,33 @@ const Cart = ({
           )}
         </>
       )}
-    </>
+    </Box>
   );
 
   if (isPopover) {
+    if (isMobile) {
+      // Dialog centrado y responsive en mobile
+      return (
+        <Dialog
+          open={open}
+          onClose={onClose}
+          fullWidth
+          maxWidth="xs"
+          slotProps={{
+            paper: {
+              sx: {
+                borderRadius: 1.5,
+                boxShadow: 3,
+                m: 1,
+              },
+            },
+          }}
+        >
+          <Box sx={{ p: 2 }}>{renderCartContent()}</Box>
+        </Dialog>
+      );
+    }
+    // Popover en desktop
     return (
       <Popover
         open={open}
@@ -303,8 +331,20 @@ const Cart = ({
         }}
         onClose={onClose}
         onClick={(e) => e.stopPropagation()}
+        slotProps={{
+          paper: {
+            sx: {
+              maxWidth: { xs: '95vw', sm: 400 },
+              minWidth: { xs: 0, sm: 350 },
+              width: { xs: '95vw', sm: 400 },
+              boxSizing: 'border-box',
+              borderRadius: 1.5,
+              boxShadow: 3,
+            },
+          },
+        }}
       >
-        <Box sx={{ p: 2, maxWidth: 400, minWidth: 350 }}>
+        <Box sx={{ p: { xs: 1, sm: 2 } }}>
           {renderCartContent()}
         </Box>
       </Popover>

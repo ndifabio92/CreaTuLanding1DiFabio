@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router";
 import { cardStyles } from "./card.styles";
 import SearchIcon from "@mui/icons-material/Search";
-import { useCart } from "../../context/hooks/useCart";
+import { useCart } from "../../hooks/useCart";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
