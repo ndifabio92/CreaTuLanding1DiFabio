@@ -50,6 +50,7 @@ const BrandsPage = () => {
           {brands.map((brand) => (
             // <ListItem key={brand.id} disablePadding>
               <Button
+                key={brand.id}
                 variant={selectedBrand === brand.name ? "contained" : "outlined"}
                 onClick={() => handleBrandClick(brand.name)}
                 sx={{ minWidth: 120 }}

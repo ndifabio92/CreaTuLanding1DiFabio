@@ -11,8 +11,7 @@ import type { SidebarProps } from "../types/ui/sidebar";
 import { routes } from "../routes/routes";
 import { getAllBrandsFromFirestore } from "../services/brands.service";
 import { Brands } from "../types/brands";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import MenuDropdown from "../components/menu/MenuDropdown";
 
 export const Sidebar: FC<SidebarProps> = ({
   mobileOpen,
@@ -69,56 +68,22 @@ export const Sidebar: FC<SidebarProps> = ({
           {routes.map((item) => {
             if (item.name === "Marcas") {
               return (
-                <>
-                  <ListItem
-                    key={item.path}
-                    onClick={() => setBrandsOpen((open) => !open)}
-                    sx={{
-                      borderRadius: 1,
-                      color: isActive(item.path) ? "primary.main" : "inherit",
-                      fontWeight: isActive(item.path) ? 700 : 500,
-                      display: 'flex',
-                      alignItems: 'center',
-                      cursor: 'pointer',
-                      userSelect: 'none',
-                      transition: 'background 0.2s',
-                      p: '16px !important',
-                      '&:hover': {
-                        backgroundColor: 'rgba(0,0,0,0.04)',
-                      },
-                    }}
-                  >
-                    <ListItemText primary={item.name} />
-                    {brandsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                  </ListItem>
-                  {brandsOpen && (
-                    <List component="div" disablePadding sx={{ pl: 3 }}>
-                      {brands.map((brand) => (
-                        <ListItem
-                          key={brand.id}
-                          onClick={() => {
-                            navigate(`/brands?brand=${encodeURIComponent(brand.name)}`);
-                            handleDrawerToggle();
-                          }}
-                          sx={{
-                            color: location.search.includes(brand.name) ? 'primary.main' : 'text.secondary',
-                            fontWeight: location.search.includes(brand.name) ? 700 : 400,
-                            borderRadius: 1,
-                            pl: '8px !important',
-                            cursor: 'pointer',
-                            userSelect: 'none',
-                            transition: 'background 0.2s',
-                            '&:hover': {
-                              backgroundColor: 'rgba(0,0,0,0.04)',
-                            },
-                          }}
-                        >
-                          <ListItemText primary={brand.name} />
-                        </ListItem>
-                      ))}
-                    </List>
-                  )}
-                </>
+                <MenuDropdown
+                  key={item.path}
+                  label={item.name}
+                  items={brands.map(b => ({ id: b.id, name: b.name }))}
+                  basePath={item.path}
+                  isSidebar
+                  isActive={isActive(item.path)}
+                  open={brandsOpen}
+                  setOpen={setBrandsOpen}
+                  handleDrawerToggle={handleDrawerToggle}
+                  onItemClick={(brand) => {
+                    navigate(`/brands?brand=${encodeURIComponent(brand.name)}`);
+                    handleDrawerToggle();
+                  }}
+                  paramKey="brand"
+                />
               );
             }
             return (

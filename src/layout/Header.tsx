@@ -1,4 +1,4 @@
-import { useState, type FC, useRef, useEffect } from "react";
+import { useState, type FC, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -8,8 +8,6 @@ import {
   Toolbar,
   Typography,
   useTheme,
-  Menu,
-  MenuItem,
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import type { AppHeaderProps } from "../types/ui/header";
@@ -18,13 +16,12 @@ import { Link, useNavigate } from "react-router";
 import CartIcon from "../components/cart/CartIcon";
 import { getAllBrandsFromFirestore } from "../services/brands.service";
 import { Brands } from "../types/brands";
+import MenuDropdown from "../components/menu/MenuDropdown";
 
 const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
   const theme = useTheme();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [brands, setBrands] = useState<Brands[]>([]);
   const navigate = useNavigate();
-  const marcasRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     getAllBrandsFromFirestore().then((data: Brands[]) => {
@@ -32,14 +29,8 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
     });
   }, []);
 
-  const handleOpenMenu = () => {
-    setAnchorEl(marcasRef.current);
-  };
-  const handleClose = () => setAnchorEl(null);
-
   const handleBrandClick = (brandName: string) => {
     navigate(`/brands?brand=${encodeURIComponent(brandName)}`);
-    handleClose();
   };
 
   return (
@@ -91,75 +82,13 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
             {routes.map((item) => {
               if (item.name === "Marcas") {
                 return (
-                  <Box
+                  <MenuDropdown
                     key={item.path}
-                    sx={{ position: "relative" }}
-                    onMouseEnter={handleOpenMenu}
-                    onMouseLeave={handleClose}
-                    ref={marcasRef}
-                  >
-                    <ListItem
-                      component={Link}
-                      to={item.path}
-                      sx={{
-                        borderRadius: 1,
-                        color: "white",
-                        cursor: "pointer",
-                        padding: "8px 16px",
-                        "&:hover": {
-                          backgroundColor: "rgba(212, 14, 14, 0.1)",
-                        },
-                      }}
-                      aria-haspopup="true"
-                      aria-controls="brands-menu"
-                    >
-                      {item.name}
-                    </ListItem>
-                    <Menu
-                      id="brands-menu"
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl)}
-                      onClose={handleClose}
-                      MenuListProps={{
-                        sx: {
-                          minWidth: 200,
-                          boxShadow: 3,
-                          borderRadius: 2,
-                          py: 1,
-                          backgroundColor: 'background.paper',
-                        },
-                      }}
-                      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                      transformOrigin={{ vertical: "top", horizontal: "left" }}
-                      disableAutoFocusItem
-                    >
-                      {brands.map((brand, idx) => (
-                        <MenuItem
-                          key={brand.id}
-                          onClick={() => handleBrandClick(brand.name)}
-                          sx={{
-                            fontWeight: 500,
-                            color: 'text.primary',
-                            borderRadius: 1,
-                            mx: 1,
-                            my: 0.5,
-                            transition: 'background 0.2s',
-                            '&:hover': {
-                              backgroundColor: 'primary.light',
-                              color: 'primary.main',
-                            },
-                            boxShadow: 0,
-                          }}
-                          divider={idx !== brands.length - 1}
-                        >
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <span style={{ fontSize: 18 }}>🏷️</span>
-                            {brand.name}
-                          </Box>
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </Box>
+                    label={item.name}
+                    items={brands.map(b => ({ id: b.id, name: b.name }))}
+                    basePath={item.path}
+                    onItemClick={(brand) => handleBrandClick(brand.name)}
+                  />
                 );
               }
               return (
