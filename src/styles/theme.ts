@@ -41,7 +41,10 @@ const theme = createTheme({
       fontWeight: 600,
     },
     h5: {
-      fontWeight: 600,
+      fontWeight: "bold",
+      fontSize: "1.2rem",
+      textTransform: "capitalize",
+      textAlign: "left",
     },
     h6: {
       fontWeight: 600,
@@ -56,6 +59,22 @@ const theme = createTheme({
     borderRadius: 8,
   },
   components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          padding: "0 0 0 0",
+          "@media (min-width:600px)": {
+            padding: "0 0 0 0",
+          },
+          "@media (min-width:960px)": {
+            padding: "0 0 0 0",
+          },
+          "@media (min-width:1280px)": {
+            padding: "0 0 0 0",
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -187,6 +206,11 @@ const theme = createTheme({
             "&:hover": {
               backgroundColor: "rgba(0, 105, 137, 0.5)",
             },
+          },
+        },
+        padding: {
+          "@media (min-width:300px)": {
+            padding: "16px 0 16px 0",
           },
         },
       },

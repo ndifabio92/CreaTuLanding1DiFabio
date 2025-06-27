@@ -112,7 +112,7 @@ const Products = () => {
               />
             </Box>
             <Box sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }}>
-              <Typography variant="h4">{product?.name}</Typography>
+              <Typography variant="h5">{product?.name.toLowerCase()}</Typography>
               <Typography variant="body1" sx={{ mt: 2 }}>
                 {product?.description}
               </Typography>
@@ -151,7 +151,7 @@ const Products = () => {
                       onClick={() => product?.id && handleAddToCart(product.id)}
                       disabled={!product}
                     >
-                      {/* Solo ícono en mobile */}
+                      Add
                     </Button>
                   </Box>
                 </Stack>
@@ -189,7 +189,7 @@ const Products = () => {
                       onClick={() => product?.id && handleAddToCart(product.id)}
                       disabled={!product}
                     >
-                      ADD TO CART
+                      Add to cart
                     </Button>
                   </Box>
                 </>

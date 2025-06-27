@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { CartContext } from "./CartContext";
+import { useToast } from "../hooks/useToast";
 
 interface CartItem {
   id: string;
@@ -9,6 +10,7 @@ interface CartItem {
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { success: sucessToast } = useToast();
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
@@ -22,12 +24,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === productId);
       if (existingItem) {
+        sucessToast("Item Agregado al carrito");
         return prevItems.map((item) =>
           item.id === productId
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
+      sucessToast("Item Agregado al carrito");
       return [...prevItems, { id: productId, quantity }];
     });
   };

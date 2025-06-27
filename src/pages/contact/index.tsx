@@ -3,8 +3,8 @@ import EmailIcon from '@mui/icons-material/Email';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { Box, Typography, Stack, Link } from '@mui/material';
 
-const phone = '111111';
-const email = '';
+const phone = '1111111';
+const email = 'email';
 const instagram1 = 'instagram';
 const instagramUrl1 = 'isntagram';
 const whatsappNumber = '11111';
