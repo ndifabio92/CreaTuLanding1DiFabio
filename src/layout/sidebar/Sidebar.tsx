@@ -1,17 +1,12 @@
 import { type FC, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
-import {
-  Box,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
-import type { SidebarProps } from "../types/ui/sidebar";
-import { routes } from "../routes/routes";
-import { getAllBrandsFromFirestore } from "../services/brands.service";
-import { Brands } from "../types/brands";
-import MenuDropdown from "../components/menu/MenuDropdown";
+import { Box, Drawer, List, ListItem, ListItemText } from "@mui/material";
+import { sidebarStyles } from "./sidebar.styles";
+import { SidebarProps } from "../../types/ui/sidebar";
+import { Brands } from "../../types/brands";
+import { getAllBrandsFromFirestore } from "../../services/brands.service";
+import MenuDropdown from "../../components/menu/MenuDropdown";
+import { routes } from "../../routes/routes";
 
 export const Sidebar: FC<SidebarProps> = ({
   mobileOpen,
@@ -39,39 +34,25 @@ export const Sidebar: FC<SidebarProps> = ({
   };
 
   const drawer = (
-    <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          p: 3,
-          pt: 4,
-          pb: 2,
-        }}
-      >
+    <Box sx={sidebarStyles.mainBox}>
+      <Box sx={sidebarStyles.headerBox}>
         <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            mb: 1,
-            cursor: "pointer",
-          }}
+          sx={sidebarStyles.logoBox}
           onClick={() => {
             navigate("/");
             handleDrawerToggle();
           }}
         ></Box>
       </Box>
-      <Box sx={{ p: 2, flexGrow: 1, padding: "0 !important" }}>
-        <List sx={{ mt: 1 }}>
+      <Box sx={sidebarStyles.contentBox}>
+        <List sx={sidebarStyles.list}>
           {routes.map((item) => {
             if (item.name === "Marcas") {
               return (
                 <MenuDropdown
                   key={item.path}
                   label={item.name}
-                  items={brands.map(b => ({ id: b.id, name: b.name }))}
+                  items={brands.map((b) => ({ id: b.id, name: b.name }))}
                   basePath={item.path}
                   isSidebar
                   isActive={isActive(item.path)}
@@ -93,18 +74,7 @@ export const Sidebar: FC<SidebarProps> = ({
                   navigate(item.path);
                   handleDrawerToggle();
                 }}
-                sx={{
-                  borderRadius: 1,
-                  color: isActive(item.path) ? "primary.main" : "inherit",
-                  fontWeight: isActive(item.path) ? 700 : 500,
-                  cursor: 'pointer',
-                  userSelect: 'none',
-                  transition: 'background 0.2s',
-                  p: '16px !important',
-                  '&:hover': {
-                    backgroundColor: 'rgba(0,0,0,0.04)',
-                  },
-                }}
+                sx={sidebarStyles.listItem(isActive(item.path))}
               >
                 <ListItemText primary={item.name} />
               </ListItem>
@@ -125,17 +95,7 @@ export const Sidebar: FC<SidebarProps> = ({
         ModalProps={{
           keepMounted: true,
         }}
-        sx={{
-          display: { xs: "block", sm: "none" },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: drawerWidth,
-            transition: (theme) =>
-              theme.transitions.create("transform", {
-                duration: theme.transitions.duration.shorter,
-              }),
-          },
-        }}
+        sx={sidebarStyles.mobileDrawer(drawerWidth)}
       >
         {drawer}
       </Drawer>
@@ -143,17 +103,7 @@ export const Sidebar: FC<SidebarProps> = ({
       {/* Drawer permanente para pantallas grandes */}
       <Drawer
         variant="persistent"
-        sx={{
-          display: { xs: "none", sm: "block" },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: drawerWidth,
-            position: "fixed",
-            height: "100%",
-            borderRight: "1px solid",
-            borderColor: "divider",
-          },
-        }}
+        sx={sidebarStyles.desktopDrawer(drawerWidth)}
         anchor="left"
         open
       >

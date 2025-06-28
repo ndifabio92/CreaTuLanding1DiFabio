@@ -1,8 +1,16 @@
 import { FC, useState, useRef } from "react";
-import { Box, ListItem, Menu, MenuItem, List, ListItemText } from "@mui/material";
+import {
+  Box,
+  ListItem,
+  Menu,
+  MenuItem,
+  List,
+  ListItemText,
+} from "@mui/material";
 import { Link, useNavigate, useSearchParams } from "react-router";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import { menuDropdownStyles } from "./menuDropdown.styles";
 
 export interface MenuDropdownItem {
   id: string;
@@ -40,7 +48,11 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
   const [searchParams] = useSearchParams();
 
   // Detectar opción activa por URL (solo para sidebar)
-  const activeValue = searchParams.get((typeof paramKey === 'string' && paramKey.length > 0) ? paramKey : label.toLowerCase());
+  const activeValue = searchParams.get(
+    typeof paramKey === "string" && paramKey.length > 0
+      ? paramKey
+      : label.toLowerCase()
+  );
 
   // Web
   const handleOpenMenu = () => setAnchorEl(ref.current);
@@ -53,7 +65,9 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
     if (onItemClick) {
       onItemClick(item);
     } else {
-      navigate(`${basePath}?${label.toLowerCase()}=${encodeURIComponent(item.name)}`);
+      navigate(
+        `${basePath}?${label.toLowerCase()}=${encodeURIComponent(item.name)}`
+      );
       if (handleDrawerToggle) handleDrawerToggle();
       handleClose();
     }
@@ -65,43 +79,28 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
       <>
         <ListItem
           onClick={handleSidebarToggle}
-          sx={{
-            borderRadius: 1,
-            color: isActive ? "primary.main" : "inherit",
-            fontWeight: isActive ? 700 : 500,
-            display: 'flex',
-            alignItems: 'center',
-            cursor: 'pointer',
-            userSelect: 'none',
-            transition: 'background 0.2s',
-            p: '16px !important',
-            '&:hover': {
-              backgroundColor: 'rgba(0,0,0,0.04)',
-            },
-          }}
+          sx={menuDropdownStyles.sidebarListItem(isActive)}
         >
           <ListItemText primary={label} />
           {/* Icono de despliegue a la derecha */}
-          {open ? <ExpandLessIcon sx={{ ml: 1 }} /> : <ExpandMoreIcon sx={{ ml: 1 }} />}
+          {open ? (
+            <ExpandLessIcon sx={menuDropdownStyles.expandIcon} />
+          ) : (
+            <ExpandMoreIcon sx={menuDropdownStyles.expandIcon} />
+          )}
         </ListItem>
         {open && (
-          <List component="div" disablePadding sx={{ pl: 3 }}>
+          <List component="div" disablePadding sx={menuDropdownStyles.subList}>
             {items.map((item) => (
               <ListItem
                 key={item.id}
                 onClick={() => handleItemClick(item)}
-                sx={{
-                  color: activeValue && activeValue.toLowerCase() === item.name.toLowerCase() ? 'primary.main' : 'text.secondary',
-                  fontWeight: activeValue && activeValue.toLowerCase() === item.name.toLowerCase() ? 700 : 400,
-                  borderRadius: 1,
-                  pl: '8px !important',
-                  cursor: 'pointer',
-                  userSelect: 'none',
-                  transition: 'background 0.2s',
-                  '&:hover': {
-                    backgroundColor: 'rgba(0,0,0,0.04)',
-                  },
-                }}
+                sx={menuDropdownStyles.subListItem(
+                  Boolean(
+                    activeValue &&
+                      activeValue.toLowerCase() === item.name.toLowerCase()
+                  )
+                )}
               >
                 <ListItemText primary={item.name} />
               </ListItem>
@@ -115,7 +114,7 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
   // Web
   return (
     <Box
-      sx={{ position: "relative" }}
+      sx={menuDropdownStyles.webBox}
       onMouseEnter={handleOpenMenu}
       onMouseLeave={handleClose}
       ref={ref}
@@ -123,15 +122,7 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
       <ListItem
         component={Link}
         to={basePath}
-        sx={{
-          borderRadius: 1,
-          color: "white",
-          cursor: "pointer",
-          padding: "8px 16px",
-          '&:hover': {
-            backgroundColor: "rgba(212, 14, 14, 0.1)",
-          },
-        }}
+        sx={menuDropdownStyles.webListItem}
         aria-haspopup="true"
         aria-controls={`${label}-menu`}
       >
@@ -144,14 +135,8 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
         onClose={handleClose}
         slotProps={{
           list: {
-            sx: {
-              minWidth: 200,
-              boxShadow: 3,
-              borderRadius: 2,
-              py: 1,
-              backgroundColor: 'background.paper',
-            },
-          }
+            sx: menuDropdownStyles.menu,
+          },
         }}
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         transformOrigin={{ vertical: "top", horizontal: "left" }}
@@ -161,22 +146,10 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
           <MenuItem
             key={item.id}
             onClick={() => handleItemClick(item)}
-            sx={{
-              fontWeight: 500,
-              color: 'text.primary',
-              borderRadius: 1,
-              mx: 1,
-              my: 0.5,
-              transition: 'background 0.2s',
-              '&:hover': {
-                backgroundColor: 'primary.light',
-                color: 'primary.main',
-              },
-              boxShadow: 0,
-            }}
+            sx={menuDropdownStyles.menuItem(idx, items.length)}
             divider={idx !== items.length - 1}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={menuDropdownStyles.menuItemBox}>
               <span style={{ fontSize: 18 }}>🏷️</span>
               {item.name}
             </Box>
@@ -187,4 +160,4 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
   );
 };
 
-export default MenuDropdown; 
+export default MenuDropdown;

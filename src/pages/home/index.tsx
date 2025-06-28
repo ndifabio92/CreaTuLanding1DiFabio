@@ -4,6 +4,7 @@ import { getAllProductsFromFirestore } from "../../services/products.service";
 import { Product } from "../../types/products";
 import { Container, Typography, Box } from "@mui/material";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
+import { homeStyles } from "./home.styles";
 
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -32,8 +33,8 @@ const Home = () => {
 
   if (error) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box sx={{ textAlign: "center", mt: 4 }}>
+      <Container maxWidth="lg" sx={homeStyles.errorContainer}>
+        <Box sx={homeStyles.errorBox}>
           <Typography color="error" variant="h5">
             {error}
           </Typography>
@@ -43,15 +44,7 @@ const Home = () => {
   }
 
   return (
-    <Container
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        gap: 2,
-        // py: 4,
-      }}
-    >
+    <Container sx={homeStyles.mainContainer}>
       {products.map((product) => (
         <CardComponent
           key={product.id}
