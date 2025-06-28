@@ -27,6 +27,7 @@ import {
 import { Product } from "../../types/products";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
+import { cartStyles } from "./cart.styles";
 
 interface CartProps {
   isPopover?: boolean;
@@ -51,7 +52,7 @@ const Cart = ({
     Record<string, Product | null>
   >({});
   const [loading, setLoading] = useState(false);
-  const isMobile = useMediaQuery('(max-width:600px)');
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const open = isPopover ? Boolean(anchorEl) : false;
 
@@ -102,34 +103,24 @@ const Cart = ({
   };
 
   const renderCartContent = () => (
-    <Container sx={{ pb: 4}}>
+    <Container sx={cartStyles.container}>
       <Box>
-        {!isCheckout && !isPopover && <BackBreadcrumb/>}
+        {!isCheckout && !isPopover && <BackBreadcrumb />}
         <Typography variant="h5" gutterBottom>
           {isCheckout ? "Detalle de la Orden" : "Carrito de Compras"}
         </Typography>
         {loadingToUse ? (
           <LoadingScreen />
         ) : (
-          <List sx={isPopover ? { maxHeight: 300, overflow: "auto" } : undefined}>
+          <List sx={isPopover ? cartStyles.popoverList : undefined}>
             {cartItems.map((item) => {
               const productDetails = productsToUse[item.id];
               if (!productDetails) return null;
 
               return (
-                <ListItem
-                  key={item.id}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "stretch",
-                    gap: 2,
-                    py: 2,
-                    borderBottom: "1px solid #e0e0e0",
-                  }}
-                >
+                <ListItem key={item.id} sx={cartStyles.listItem}>
                   {/* Información del producto */}
-                  <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
+                  <Box sx={cartStyles.productInfoBox}>
                     <Avatar
                       src={
                         productDetails.urls && productDetails.urls.length > 0
@@ -137,25 +128,12 @@ const Cart = ({
                           : ""
                       }
                       alt={productDetails.name || "Producto"}
-                      sx={{
-                        width: isPopover ? 50 : 80,
-                        height: isPopover ? 50 : 80,
-                        flexShrink: 0,
-                      }}
+                      sx={cartStyles.avatar(isPopover)}
                     />
-                    <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Box sx={cartStyles.productDetailsBox}>
                       <Typography
                         variant={isPopover ? "body2" : "body1"}
-                        sx={{
-                          fontWeight: "medium",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          display: "-webkit-box",
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                          textTransform: "capitalize",
-                          mb: 0.5,
-                        }}
+                        sx={cartStyles.productName(isPopover)}
                       >
                         {productDetails.name.toLowerCase()}
                       </Typography>
@@ -166,76 +144,48 @@ const Cart = ({
                   </Box>
 
                   {/* Controles distribuidos en toda la card */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      width: "100%",
-                      gap: 2,
-                    }}
-                  >
+                  <Box sx={cartStyles.controlsBox}>
                     {/* Controles de cantidad */}
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
-                        flex: "0 0 auto",
-                      }}
-                    >
+                    <Box sx={cartStyles.quantityControlsBox}>
                       <IconButton
                         size="small"
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() =>
+                          updateQuantity(item.id, item.quantity - 1)
+                        }
                         disabled={item.quantity <= 1}
                       >
                         <RemoveIcon fontSize="small" />
                       </IconButton>
-                      <Typography
-                        sx={{
-                          minWidth: "40px",
-                          textAlign: "center",
-                          fontWeight: "medium",
-                        }}
-                      >
+                      <Typography sx={cartStyles.quantityTypography}>
                         {item.quantity}
                       </Typography>
                       <IconButton
                         size="small"
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() =>
+                          updateQuantity(item.id, item.quantity + 1)
+                        }
                       >
                         <AddIcon fontSize="small" />
                       </IconButton>
                     </Box>
 
                     {/* Botón eliminar */}
-                    <Box sx={{ flex: 1, textAlign: "center" }}>
+                    <Box sx={cartStyles.deleteButtonBox}>
                       <IconButton
                         size="small"
                         onClick={() => removeFromCart(item.id)}
                         aria-label={`Eliminar ${productDetails.name} del carrito`}
-                        sx={{
-                          color: "error.light",
-                          backgroundColor: "error.50",
-                          "&:hover": {
-                            backgroundColor: "error.100",
-                            color: "error.main",
-                          },
-                        }}
+                        sx={cartStyles.deleteButton}
                       >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </Box>
 
                     {/* Precio total del item */}
-                    <Box sx={{ flex: "0 0 auto" }}>
+                    <Box sx={cartStyles.priceBox}>
                       <Typography
                         variant={isPopover ? "body2" : "body1"}
-                        sx={{
-                          fontWeight: "bold",
-                          color: "primary.main",
-                          fontSize: isPopover ? "0.875rem" : "1.1rem",
-                        }}
+                        sx={cartStyles.itemPrice(isPopover)}
                       >
                         {formatPrice(productDetails.price * item.quantity)}
                       </Typography>
@@ -249,12 +199,12 @@ const Cart = ({
                 {isPopover ? (
                   <ListItemText
                     primary="El carrito está vacío"
-                    sx={{ textAlign: "center" }}
+                    sx={cartStyles.emptyCartText}
                   />
                 ) : (
                   <Typography
                     variant="body1"
-                    sx={{ textAlign: "center", width: "100%" }}
+                    sx={cartStyles.emptyCartTypography}
                   >
                     El carrito está vacío
                   </Typography>
@@ -266,15 +216,9 @@ const Cart = ({
 
         {cartItems.length > 0 && !loadingToUse && (
           <>
-            <Divider sx={{ my: 2 }} />
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                mb: 2,
-              }}
-            >
-              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            <Divider sx={cartStyles.divider} />
+            <Box sx={cartStyles.totalBox}>
+              <Typography variant="h6" sx={cartStyles.totalTypography}>
                 Total: {formatPrice(calculateTotal())}
               </Typography>
             </Box>
@@ -306,15 +250,11 @@ const Cart = ({
           maxWidth="xs"
           slotProps={{
             paper: {
-              sx: {
-                borderRadius: 1.5,
-                boxShadow: 3,
-                m: 1,
-              },
+              sx: cartStyles.dialogPaper,
             },
           }}
         >
-          <Box sx={{ p: 2 }}>{renderCartContent()}</Box>
+          <Box sx={cartStyles.dialogContent}>{renderCartContent()}</Box>
         </Dialog>
       );
     }
@@ -335,20 +275,11 @@ const Cart = ({
         onClick={(e) => e.stopPropagation()}
         slotProps={{
           paper: {
-            sx: {
-              maxWidth: { xs: '95vw', sm: 400 },
-              minWidth: { xs: 0, sm: 350 },
-              width: { xs: '95vw', sm: 400 },
-              boxSizing: 'border-box',
-              borderRadius: 1.5,
-              boxShadow: 3,
-            },
+            sx: cartStyles.popoverPaper,
           },
         }}
       >
-        <Box sx={{ p: { xs: 1, sm: 2 } }}>
-          {renderCartContent()}
-        </Box>
+        <Box sx={cartStyles.popoverContent}>{renderCartContent()}</Box>
       </Popover>
     );
   }

@@ -8,6 +8,7 @@ import { generateWhatsAppMessage } from "../../shared/whatsappUtils";
 import { getCartItemDetails } from "../../shared/cartUtils";
 import { useState, useEffect } from "react";
 import { CartProductWithQuantity } from "../../types/app/whatsAppMessage";
+import { checkoutStyles } from "./checkout.styles";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Requerido"),
@@ -51,25 +52,9 @@ const Checkout = () => {
   }, [cartItems]);
 
   return (
-    <Container sx={{ pb: 4 }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          gap: 4,
-          // py: 4,
-        }}
-      >
-        <Box
-          sx={{
-            flex: 1,
-            p: 3,
-            bgcolor: "background.paper",
-            borderRadius: 2,
-            boxShadow: 2,
-            mb: { xs: 2, md: 0 },
-          }}
-        >
+    <Container sx={checkoutStyles.container}>
+      <Box sx={checkoutStyles.mainBox}>
+        <Box sx={checkoutStyles.formBox}>
           <Typography variant="h5" gutterBottom>
             Datos de contacto
           </Typography>
@@ -134,9 +119,7 @@ const Checkout = () => {
                   onBlur={handleBlur}
                 />
                 {cartItems.length > 0 && !loading && (
-                  <Box
-                    sx={{ mt: 3, display: "flex", justifyContent: "center" }}
-                  >
+                  <Box sx={checkoutStyles.whatsappButtonBox}>
                     <WhatsAppButton
                       message={generateWhatsAppMessage(values, cartProducts)}
                       disabled={!isValid}
@@ -150,15 +133,7 @@ const Checkout = () => {
           </Formik>
         </Box>
 
-        <Box
-          sx={{
-            flex: 1,
-            p: "24px",
-            bgcolor: "background.paper",
-            borderRadius: 2,
-            boxShadow: 2,
-          }}
-        >
+        <Box sx={checkoutStyles.cartBox}>
           <Cart
             isCheckout
             externalCartProducts={Object.fromEntries(

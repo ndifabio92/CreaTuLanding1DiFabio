@@ -7,6 +7,7 @@ import { Product } from "../../types/products";
 import CardComponent from "../../components/cards/CardComponent";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 import { useSearchParams } from "react-router";
+import { brandsStyles } from "./brands.styles";
 
 const BrandsPage = () => {
   const [brands, setBrands] = useState<Brands[]>([]);
@@ -18,7 +19,7 @@ const BrandsPage = () => {
   useEffect(() => {
     const fetchBrands = async () => {
       const data = await getAllBrandsFromFirestore();
-      setBrands(data.filter(b => b.active));
+      setBrands(data.filter((b) => b.active));
     };
     fetchBrands();
   }, []);
@@ -27,11 +28,11 @@ const BrandsPage = () => {
     const fetchProducts = async () => {
       setLoading(true);
       const brand = searchParams.get("brand");
-    //   if (brand) {
-        setSelectedBrand(brand ?? 'Helikon');
-        const data = await getProductsByBrandName(brand ?? 'Helikon');
-        setProducts(data);
-    //   } 
+      //   if (brand) {
+      setSelectedBrand(brand ?? "Helikon");
+      const data = await getProductsByBrandName(brand ?? "Helikon");
+      setProducts(data);
+      //   }
       setLoading(false);
     };
     fetchProducts();
@@ -42,25 +43,25 @@ const BrandsPage = () => {
   };
 
   return (
-    <Container sx={{ py: 4 }}>
-      <Typography variant="h4" sx={{ mb: 2, fontWeight: 700 }}>
+    <Container sx={brandsStyles.container}>
+      <Typography variant="h4" sx={brandsStyles.title}>
         Marcas
       </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center', pb: 2}}>
-          {brands.map((brand) => (
-            // <ListItem key={brand.id} disablePadding>
-              <Button
-                key={brand.id}
-                variant={selectedBrand === brand.name ? "contained" : "outlined"}
-                onClick={() => handleBrandClick(brand.name)}
-                sx={{ minWidth: 120 }}
-              >
-                {brand.name}
-              </Button>
-            // </ListItem>
-          ))}
-        </Box>
-      <Divider sx={{ mb: 4 }} />
+      <Box sx={brandsStyles.brandsBox}>
+        {brands.map((brand) => (
+          // <ListItem key={brand.id} disablePadding>
+          <Button
+            key={brand.id}
+            variant={selectedBrand === brand.name ? "contained" : "outlined"}
+            onClick={() => handleBrandClick(brand.name)}
+            sx={brandsStyles.brandButton}
+          >
+            {brand.name}
+          </Button>
+          // </ListItem>
+        ))}
+      </Box>
+      <Divider sx={brandsStyles.divider} />
       {loading ? (
         <LoadingScreen />
       ) : products.length === 0 ? (
@@ -68,17 +69,17 @@ const BrandsPage = () => {
           No hay productos para esta marca.
         </Typography>
       ) : (
-        <Container sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
+        <Container sx={brandsStyles.productsContainer}>
           {products.map((product) => (
-              <CardComponent
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                path={`/products/${product.id}`}
-                image={product.urls[0]}
-                stock={product.stock}
-                isNew={product.isNew}
-              />
+            <CardComponent
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              path={`/products/${product.id}`}
+              image={product.urls[0]}
+              stock={product.stock}
+              isNew={product.isNew}
+            />
           ))}
         </Container>
       )}
@@ -86,4 +87,4 @@ const BrandsPage = () => {
   );
 };
 
-export default BrandsPage; 
+export default BrandsPage;

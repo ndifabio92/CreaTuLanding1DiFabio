@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { Outlet } from "react-router";
-import Header from "./Header";
-import { Sidebar } from "./Sidebar";
-import Footer from './Footer';
+import Footer from "./footer/Footer";
+import { layoutStyles } from "./layout.styles";
+import Header from "./header/Header";
+import { Sidebar } from "./sidebar/Sidebar";
 
 const Layout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -16,14 +17,7 @@ const Layout = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        minHeight: "100vh",
-        flexDirection: "column",
-        position: "relative",
-      }}
-    >
+    <Box sx={layoutStyles.mainBox}>
       <Header handleDrawerToggle={handleDrawerToggle} />
 
       {isMobile && (
@@ -33,19 +27,7 @@ const Layout = () => {
           mobileOpen={mobileOpen}
         />
       )}
-      <Box
-        component={"main"}
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)`, md: "100%" },
-          ml: { sm: `${drawerWidth}px`, md: 0 },
-          display: "flex",
-          flexDirection: "column",
-          position: "relative",
-          top: "64px", // Altura del header
-        }}
-      >
+      <Box component={"main"} sx={layoutStyles.contentBox(drawerWidth)}>
         <Outlet />
       </Box>
       <Footer />

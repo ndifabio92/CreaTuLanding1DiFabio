@@ -23,6 +23,7 @@ import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 import { formatPrice } from "../../shared/cartUtils";
 import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
 import ImageCarousel from "../../components/carousel/ImageCarousel";
+import { productsStyles } from "./products.styles";
 
 const Products = () => {
   const { addToCart } = useCart();
@@ -58,7 +59,7 @@ const Products = () => {
   if (!product && !loading) {
     return (
       <Container>
-        <Typography variant="h4" sx={{ mt: 4 }}>
+        <Typography variant="h4" sx={productsStyles.notFoundTitle}>
           Producto no encontrado
         </Typography>
       </Container>
@@ -76,76 +77,62 @@ const Products = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ pb: 4 }}>
-      <BackBreadcrumb/>
+    <Container maxWidth="lg" sx={productsStyles.container}>
+      <BackBreadcrumb />
       {loading ? (
         <LoadingScreen />
       ) : (
-        <Paper elevation={3} sx={{ p: 4 }}>
+        <Paper elevation={3} sx={productsStyles.paper}>
           <Stack
             direction={{ xs: "column", sm: "row" }}
             spacing={4}
-            sx={{
-              alignItems: { xs: "center", sm: "flex-start" },
-              justifyContent: { xs: "center", sm: "flex-start" },
-              width: '100%',
-            }}
+            sx={productsStyles.mainStack}
           >
-            <Box
-              sx={{
-                width: { xs: '100%', sm: 300 },
-                maxWidth: 300,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                mb: { xs: 2, sm: 0 },
-              }}
-            >
+            <Box sx={productsStyles.imageBox}>
               <ImageCarousel
                 images={product?.urls || []}
-                altText={product?.name || 'Product image'}
+                altText={product?.name || "Product image"}
                 maxWidth={300}
                 aspectRatio="1/1"
                 borderRadius={12}
               />
             </Box>
-            <Box sx={{ flexGrow: 1, width: { xs: '100%', sm: 'auto' } }}>
-              <Typography variant="h5">{product?.name.toLowerCase()}</Typography>
-              <Typography variant="body1" sx={{ mt: 2 }}>
+            <Box sx={productsStyles.contentBox}>
+              <Typography variant="h5">
+                {product?.name.toLowerCase()}
+              </Typography>
+              <Typography variant="body1" sx={productsStyles.description}>
                 {product?.description}
               </Typography>
-              <Typography variant="h6" sx={{ mt: 2 }}>
+              <Typography variant="h6" sx={productsStyles.price}>
                 {product && formatPrice(product.price)}
               </Typography>
               {isMobile ? (
-                <Stack direction="row" spacing={2} sx={{ mt: 2, width: '100%' }}>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  sx={productsStyles.mobileStack}
+                >
                   <IconButton
                     onClick={() => handleQuantityChange(quantity - 1)}
                     disabled={quantity <= 1}
                   >
                     <RemoveIcon />
                   </IconButton>
-                  <Typography
-                    sx={{
-                      minWidth: "30px",
-                      textAlign: "center",
-                      fontWeight: "medium",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
+                  <Typography sx={productsStyles.quantityTypography}>
                     {quantity}
                   </Typography>
-                  <IconButton onClick={() => handleQuantityChange(quantity + 1)}>
+                  <IconButton
+                    onClick={() => handleQuantityChange(quantity + 1)}
+                  >
                     <AddIcon />
                   </IconButton>
-                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                  <Box sx={productsStyles.mobileButtonContainer}>
                     <Button
                       variant="contained"
                       color="primary"
                       startIcon={<ShoppingCartIcon />}
-                      sx={{ minWidth: 48, px: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                      sx={productsStyles.mobileButton}
                       onClick={() => product?.id && handleAddToCart(product.id)}
                       disabled={!product}
                     >
@@ -155,35 +142,32 @@ const Products = () => {
                 </Stack>
               ) : (
                 <>
-                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+                  <Stack
+                    direction="row"
+                    spacing={2}
+                    sx={productsStyles.desktopStack}
+                  >
                     <IconButton
                       onClick={() => handleQuantityChange(quantity - 1)}
                       disabled={quantity <= 1}
                     >
                       <RemoveIcon />
                     </IconButton>
-                    <Typography
-                      sx={{
-                        minWidth: "30px",
-                        textAlign: "center",
-                        fontWeight: "medium",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
+                    <Typography sx={productsStyles.quantityTypography}>
                       {quantity}
                     </Typography>
-                    <IconButton onClick={() => handleQuantityChange(quantity + 1)}>
+                    <IconButton
+                      onClick={() => handleQuantityChange(quantity + 1)}
+                    >
                       <AddIcon />
                     </IconButton>
                   </Stack>
-                  <Box sx={{}}>
+                  <Box sx={productsStyles.desktopButtonContainer}>
                     <Button
                       variant="contained"
                       color="primary"
                       startIcon={<ShoppingCartIcon />}
-                      sx={{ mt: 2 }}
+                      sx={productsStyles.desktopButton}
                       onClick={() => product?.id && handleAddToCart(product.id)}
                       disabled={!product}
                     >
@@ -194,22 +178,14 @@ const Products = () => {
               )}
             </Box>
           </Stack>
-          <Divider sx={{ my: 4 }} />
+          <Divider sx={productsStyles.divider} />
           <Typography variant="h6">Categorías</Typography>
           <Stack
             direction="row"
             spacing={1}
-            sx={{
-              mt: 1,
-              flexWrap: 'wrap',
-              justifyContent: { xs: 'center', sm: 'flex-start' },
-              width: '100%',
-              gap: 1,
-            }}
+            sx={productsStyles.categoriesStack}
           >
-            {product?.category.map((cat) => (
-              <Chip key={cat} label={cat} />
-            ))}
+            {product?.category.map((cat) => <Chip key={cat} label={cat} />)}
           </Stack>
         </Paper>
       )}

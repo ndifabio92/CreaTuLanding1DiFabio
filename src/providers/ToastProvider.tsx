@@ -11,7 +11,12 @@ export const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
 
   return (
     <ToastContext.Provider value={{ success, error, info, warning }}>
-      <Toaster position="top-right" richColors expand={true} />
+      <Toaster
+        position="top-right"
+        richColors
+        expand={true}
+        style={{ marginTop: "35px" }}
+      />
       {children}
     </ToastContext.Provider>
   );

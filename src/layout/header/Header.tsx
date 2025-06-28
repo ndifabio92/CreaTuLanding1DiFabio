@@ -10,13 +10,14 @@ import {
   useTheme,
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
-import type { AppHeaderProps } from "../types/ui/header";
-import { routes } from "../routes/routes";
 import { Link, useNavigate } from "react-router";
-import CartIcon from "../components/cart/CartIcon";
-import { getAllBrandsFromFirestore } from "../services/brands.service";
-import { Brands } from "../types/brands";
-import MenuDropdown from "../components/menu/MenuDropdown";
+import { headerStyles } from "./header.styles";
+import { AppHeaderProps } from "../../types/ui/header";
+import { Brands } from "../../types/brands";
+import { getAllBrandsFromFirestore } from "../../services/brands.service";
+import { routes } from "../../routes/routes";
+import MenuDropdown from "../../components/menu/MenuDropdown";
+import CartIcon from "../../components/cart/CartIcon";
 
 const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
   const theme = useTheme();
@@ -34,58 +35,32 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
   };
 
   return (
-    <AppBar
-      position="fixed"
-      elevation={0}
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        zIndex: theme.zIndex.drawer + 1,
-        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)",
-      }}
-    >
-      <Toolbar
-        sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+    <AppBar position="fixed" elevation={0} sx={headerStyles.appBar(theme)}>
+      <Toolbar sx={headerStyles.toolbar}>
+        <Box sx={headerStyles.logoBox}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={headerStyles.menuButton}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              fontWeight: 600,
-              letterSpacing: "0.5px",
-              display: { xs: "none", sm: "block" },
-            }}
-          >
+          <Typography variant="h6" component="div" sx={headerStyles.logo}>
             Nando CWS
           </Typography>
         </Box>
 
-        <Box
-          sx={{
-            display: { xs: "none", md: "flex" },
-            justifyContent: "center",
-            flex: 1,
-            mx: 4,
-          }}
-        >
-          <List sx={{ display: "flex", gap: 2 }}>
+        <Box sx={headerStyles.navigationBox}>
+          <List sx={headerStyles.navigationList}>
             {routes.map((item) => {
               if (item.name === "Marcas") {
                 return (
                   <MenuDropdown
                     key={item.path}
                     label={item.name}
-                    items={brands.map(b => ({ id: b.id, name: b.name }))}
+                    items={brands.map((b) => ({ id: b.id, name: b.name }))}
                     basePath={item.path}
                     onItemClick={(brand) => handleBrandClick(brand.name)}
                   />
@@ -96,15 +71,7 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
                   key={item.path}
                   component={Link}
                   to={item.path}
-                  sx={{
-                    borderRadius: 1,
-                    color: "white",
-                    cursor: "pointer",
-                    padding: "8px 16px",
-                    "&:hover": {
-                      backgroundColor: "rgba(212, 14, 14, 0.1)",
-                    },
-                  }}
+                  sx={headerStyles.navigationItem}
                 >
                   {item.name}
                 </ListItem>
@@ -113,19 +80,14 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
           </List>
         </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={headerStyles.cartBox}>
           <IconButton
             size="large"
             aria-label="cuenta del usuario"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             color="inherit"
-            sx={{
-              transition: "transform 0.2s",
-              "&:hover": {
-                transform: "scale(1.05)",
-              },
-            }}
+            sx={headerStyles.cartButton}
           >
             <CartIcon />
           </IconButton>
