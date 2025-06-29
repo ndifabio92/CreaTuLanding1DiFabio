@@ -22,10 +22,6 @@ export const sendWhatsAppMessage = (
   window.open(url, "_blank");
 };
 
-/**
- * Abre WhatsApp sin número específico (solo con mensaje)
- * @param message - Mensaje a enviar
- */
 export const openWhatsAppWithMessage = (message: string) => {
   const { VITE_WHATSAPP_PHONE } = env;
   const encodedMessage = encodeURIComponent(message);

@@ -1,14 +1,15 @@
-// components/WhatsAppButton.tsx
-import React from 'react';
-import { Button, IconButton, Fab } from '@mui/material';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import { openWhatsAppWithMessage, sendWhatsAppMessage } from '../../shared/whatsappUtils';
-
+import React from "react";
+import { Button, IconButton, Fab } from "@mui/material";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import {
+  openWhatsAppWithMessage,
+  sendWhatsAppMessage,
+} from "../../shared/whatsappUtils";
 
 interface WhatsAppButtonProps {
   phoneNumber?: string;
   message: string;
-  variant?: 'button' | 'icon' | 'fab';
+  variant?: "button" | "icon" | "fab";
   useWeb?: boolean;
   children?: React.ReactNode;
   className?: string;
@@ -19,12 +20,12 @@ interface WhatsAppButtonProps {
 const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   phoneNumber,
   message,
-  variant = 'button',
+  variant = "button",
   useWeb = true,
   children,
   className,
   style,
-  disabled
+  disabled,
 }) => {
   const handleClick = () => {
     if (phoneNumber) {
@@ -35,16 +36,16 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   };
 
   const defaultStyle = {
-    backgroundColor: '#25D366',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#1da851',
+    backgroundColor: "#25D366",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#1da851",
     },
-    ...style
+    ...style,
   };
 
   switch (variant) {
-    case 'icon':
+    case "icon":
       return (
         <IconButton
           onClick={handleClick}
@@ -55,8 +56,8 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
           <WhatsAppIcon />
         </IconButton>
       );
-      
-    case 'fab':
+
+    case "fab":
       return (
         <Fab
           onClick={handleClick}
@@ -67,7 +68,7 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
           <WhatsAppIcon />
         </Fab>
       );
-      
+
     default:
       return (
         <Button
@@ -78,7 +79,7 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
           variant="contained"
           disabled={disabled}
         >
-          {children || 'Enviar por WhatsApp'}
+          {children || "Enviar por WhatsApp"}
         </Button>
       );
   }

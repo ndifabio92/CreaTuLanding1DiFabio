@@ -5,6 +5,7 @@ interface CartItem {
   quantity: number;
   selectedSize?: string;
   selectedColor?: string;
+  productId?: string;
 }
 
 interface CartContextType {

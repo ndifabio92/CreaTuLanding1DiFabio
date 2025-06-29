@@ -68,19 +68,36 @@ const Cart = ({
     const fetchProducts = async () => {
       setLoading(true);
       const productsMap: Record<string, Product | null> = { ...cartProducts };
-      const missingIds = cartItems.filter((item) => !productsMap[item.id]);
+
+      // Función para extraer el productId del cartItemId
+      const extractProductId = (cartItemId: string): string => {
+        return cartItemId.split("_")[0];
+      };
+
+      const missingIds = cartItems.filter((item) => {
+        const productId = item.productId || extractProductId(item.id);
+        return !productsMap[productId];
+      });
+
       await Promise.all(
         missingIds.map(async (item) => {
           const product = await getCartItemDetails(item.id);
-          productsMap[item.id] = product;
+          const productId = item.productId || extractProductId(item.id);
+          productsMap[productId] = product;
         })
       );
 
+      // Limpiar productos que ya no están en el carrito
       Object.keys(productsMap).forEach((id) => {
-        if (!cartItems.find((item) => item.id === id)) {
+        const hasItem = cartItems.some((item) => {
+          const productId = item.productId || extractProductId(item.id);
+          return productId === id;
+        });
+        if (!hasItem) {
           delete productsMap[id];
         }
       });
+
       setCartProducts(productsMap);
       setLoading(false);
     };
@@ -117,7 +134,13 @@ const Cart = ({
         ) : (
           <List sx={isPopover ? cartStyles.popoverList : undefined}>
             {cartItems.map((item) => {
-              const productDetails = productsToUse[item.id];
+              // Función para extraer el productId del cartItemId
+              const extractProductId = (cartItemId: string): string => {
+                return cartItemId.split("_")[0];
+              };
+
+              const productId = item.productId || extractProductId(item.id);
+              const productDetails = productsToUse[productId];
               if (!productDetails) return null;
 
               return (

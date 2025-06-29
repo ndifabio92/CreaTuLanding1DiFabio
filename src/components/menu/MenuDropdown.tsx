@@ -47,18 +47,15 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  // Detectar opción activa por URL (solo para sidebar)
   const activeValue = searchParams.get(
     typeof paramKey === "string" && paramKey.length > 0
       ? paramKey
       : label.toLowerCase()
   );
 
-  // Web
   const handleOpenMenu = () => setAnchorEl(ref.current);
   const handleClose = () => setAnchorEl(null);
 
-  // Sidebar
   const handleSidebarToggle = () => setOpen && setOpen(!open);
 
   const handleItemClick = (item: MenuDropdownItem) => {
@@ -74,7 +71,6 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
   };
 
   if (isSidebar) {
-    // Mobile
     return (
       <>
         <ListItem
@@ -82,7 +78,6 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
           sx={menuDropdownStyles.sidebarListItem(isActive)}
         >
           <ListItemText primary={label} />
-          {/* Icono de despliegue a la derecha */}
           {open ? (
             <ExpandLessIcon sx={menuDropdownStyles.expandIcon} />
           ) : (
@@ -111,7 +106,6 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
     );
   }
 
-  // Web
   return (
     <Box
       sx={menuDropdownStyles.webBox}
