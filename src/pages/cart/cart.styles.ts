@@ -1,9 +1,9 @@
 export const cartStyles = {
   container: {
-    pb: 4,
+    // pb: 4,
   },
   popoverList: {
-    maxHeight: 300,
+    // maxHeight: 300,
     overflow: "auto",
   },
   listItem: {
@@ -115,7 +115,8 @@ export const cartStyles = {
   },
   popoverPaper: {
     width: 350,
-    maxHeight: 400,
+    height: "90vh",
+    maxHeight: "100vh",
   },
   popoverContent: {
     p: 2,

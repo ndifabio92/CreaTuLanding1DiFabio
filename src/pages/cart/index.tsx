@@ -69,7 +69,6 @@ const Cart = ({
       setLoading(true);
       const productsMap: Record<string, Product | null> = { ...cartProducts };
 
-      // Función para extraer el productId del cartItemId
       const extractProductId = (cartItemId: string): string => {
         return cartItemId.split("_")[0];
       };
@@ -87,7 +86,6 @@ const Cart = ({
         })
       );
 
-      // Limpiar productos que ya no están en el carrito
       Object.keys(productsMap).forEach((id) => {
         const hasItem = cartItems.some((item) => {
           const productId = item.productId || extractProductId(item.id);
@@ -134,7 +132,6 @@ const Cart = ({
         ) : (
           <List sx={isPopover ? cartStyles.popoverList : undefined}>
             {cartItems.map((item) => {
-              // Función para extraer el productId del cartItemId
               const extractProductId = (cartItemId: string): string => {
                 return cartItemId.split("_")[0];
               };
