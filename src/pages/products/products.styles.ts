@@ -30,6 +30,7 @@ export const productsStyles = {
   },
   price: {
     mt: 2,
+    mb: 1,
   },
   mobileStack: {
     mt: 2,

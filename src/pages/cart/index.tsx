@@ -27,6 +27,7 @@ import {
 import { Product } from "../../types/products";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
+import SelectedOptions from "../../components/product/selected/Selected";
 import { cartStyles } from "./cart.styles";
 
 interface CartProps {
@@ -58,12 +59,12 @@ const Cart = ({
 
   const open = isPopover ? Boolean(anchorEl) : false;
 
-  // Usar los productos externos si están presentes
+  // evita consumir nuevamente la api
   const productsToUse = externalCartProducts ?? cartProducts;
   const loadingToUse = externalLoading ?? loading;
 
   useEffect(() => {
-    if (externalCartProducts !== undefined) return; // Si recibo productos externos, no hago fetch
+    if (externalCartProducts !== undefined) return; // si hay productos los usa
     const fetchProducts = async () => {
       setLoading(true);
       const productsMap: Record<string, Product | null> = { ...cartProducts };
@@ -121,7 +122,6 @@ const Cart = ({
 
               return (
                 <ListItem key={item.id} sx={cartStyles.listItem}>
-                  {/* Información del producto */}
                   <Box sx={cartStyles.productInfoBox}>
                     <Avatar
                       src={
@@ -142,12 +142,16 @@ const Cart = ({
                       <Typography variant="body2" color="text.secondary">
                         {formatPrice(productDetails.price)}
                       </Typography>
+
+                      <SelectedOptions
+                        selectedSize={item.selectedSize}
+                        selectedColor={item.selectedColor}
+                        isPopover={isPopover}
+                      />
                     </Box>
                   </Box>
 
-                  {/* Controles distribuidos en toda la card */}
                   <Box sx={cartStyles.controlsBox}>
-                    {/* Controles de cantidad */}
                     <Box sx={cartStyles.quantityControlsBox}>
                       <IconButton
                         size="small"
@@ -171,7 +175,6 @@ const Cart = ({
                       </IconButton>
                     </Box>
 
-                    {/* Botón eliminar */}
                     <Box sx={cartStyles.deleteButtonBox}>
                       <IconButton
                         size="small"
@@ -183,7 +186,6 @@ const Cart = ({
                       </IconButton>
                     </Box>
 
-                    {/* Precio total del item */}
                     <Box sx={cartStyles.priceBox}>
                       <Typography
                         variant={isPopover ? "body2" : "body1"}
@@ -267,7 +269,6 @@ const Cart = ({
         </Dialog>
       );
     }
-    // Popover en desktop
     return (
       <Popover
         open={open}

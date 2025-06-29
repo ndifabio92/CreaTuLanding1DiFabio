@@ -3,6 +3,7 @@ import {
   CartProductWithQuantity,
   WhatsAppMessage,
 } from "../types/externals/whatsAppMessage";
+import { CartItem } from "../context/CartContext";
 
 export const sendWhatsAppMessage = (
   phoneNumber: string,
@@ -45,15 +46,26 @@ export const generateWhatsAppLink = (
 
 export const generateWhatsAppMessage = (
   values: Omit<WhatsAppMessage, "products">,
-  products: CartProductWithQuantity[]
+  products: CartProductWithQuantity[],
+  cartItems: CartItem[]
 ): string => {
   const userInfo = `👤 *Nombre:* ${values.name} ${values.lastName}\n📧 *Email:* ${values.email}\n📱 *Teléfono:* ${values.phoneNumber}`;
+
   const productList = products
-    .map(
-      (p, i) =>
-        `*${i + 1}.* ${p.product.name}  x${p.quantity}  -  $${p.product.price * p.quantity}`
-    )
+    .map((p, i) => {
+      const cartItem = cartItems.find((item) => item.id === p.product.id);
+      const sizeInfo = cartItem?.selectedSize
+        ? ` | Size: ${cartItem.selectedSize}`
+        : "";
+      const colorInfo = cartItem?.selectedColor
+        ? ` | Color: ${cartItem.selectedColor}`
+        : "";
+      const options = sizeInfo + colorInfo;
+
+      return `*${i + 1}.* ${p.product.name}${options}  x${p.quantity}  -  $${p.product.price * p.quantity}`;
+    })
     .join("\n");
+
   const total = products.reduce(
     (acc, p) => acc + p.product.price * p.quantity,
     0

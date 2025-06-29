@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { useToast } from "../hooks/useToast";
-import { CartContext } from "../context/CartContext";
-
-interface CartItem {
-  id: string;
-  quantity: number;
-}
+import { CartContext, CartItem } from "../context/CartContext";
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -20,7 +15,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (productId: string, quantity: number) => {
+  const addToCart = (
+    productId: string,
+    quantity: number,
+    selectedSize?: string,
+    selectedColor?: string
+  ) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === productId);
       if (existingItem) {
@@ -32,7 +32,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         );
       }
       sucessToast("Item Agregado al carrito");
-      return [...prevItems, { id: productId, quantity }];
+      return [
+        ...prevItems,
+        { id: productId, quantity, selectedSize, selectedColor },
+      ];
     });
   };
 
@@ -54,6 +57,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   };
 
+  const updateProductOptions = (
+    productId: string,
+    selectedSize?: string,
+    selectedColor?: string
+  ) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === productId ? { ...item, selectedSize, selectedColor } : item
+      )
+    );
+  };
+
   const getTotalItems = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
@@ -65,6 +80,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         addToCart,
         removeFromCart,
         updateQuantity,
+        updateProductOptions,
         getTotalItems,
       }}
     >

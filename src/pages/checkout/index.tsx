@@ -128,7 +128,11 @@ const Checkout = () => {
                 {cartItems.length > 0 && !loading && (
                   <Box sx={checkoutStyles.whatsappButtonBox}>
                     <WhatsAppButton
-                      message={generateWhatsAppMessage(values, cartProducts)}
+                      message={generateWhatsAppMessage(
+                        values,
+                        cartProducts,
+                        cartItems
+                      )}
                       disabled={!isValid}
                     >
                       Envía tu Pedido por WhatsApp
