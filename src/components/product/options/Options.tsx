@@ -1,5 +1,5 @@
 import { Box, Typography, Chip, Stack } from "@mui/material";
-import { optionsStyles } from "./Options.styles";
+import { optionsStyles } from "./options.styles";
 
 interface OptionsProps {
   type: "size" | "color";
