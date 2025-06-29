@@ -36,6 +36,7 @@ interface CartProps {
   onClose?: () => void;
   externalCartProducts?: Record<string, Product | null>;
   externalLoading?: boolean;
+  exchangeRate?: number | null;
 }
 
 const Cart = ({
@@ -45,6 +46,7 @@ const Cart = ({
   onClose,
   externalCartProducts,
   externalLoading,
+  exchangeRate,
 }: CartProps) => {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
   const navigate = useNavigate();
@@ -218,10 +220,17 @@ const Cart = ({
           <>
             <Divider sx={cartStyles.divider} />
             <Box sx={cartStyles.totalBox}>
-              <Typography variant="h6" sx={cartStyles.totalTypography}>
+              <Typography variant="h5" sx={cartStyles.totalTypography}>
                 Total: {formatPrice(calculateTotal())}
               </Typography>
             </Box>
+            {exchangeRate && (
+              <Box sx={cartStyles.totalBox}>
+                <Typography variant="h5" sx={cartStyles.totalTypography}>
+                  Total ARS: {formatPrice(calculateTotal() * exchangeRate)}
+                </Typography>
+              </Box>
+            )}
             {!isCheckout && (
               <Button
                 variant="contained"

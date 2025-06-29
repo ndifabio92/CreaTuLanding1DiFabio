@@ -13,6 +13,7 @@ const envSchema = z.object({
   VITE_EMAIL: z.string().default("test@gmail.com"),
   VITE_INSTAGRAM_NAME: z.string().default("test"),
   VITE_INSTAGRAM_URL: z.string().default("https://www.instagram.com/test/"),
+  VITE_EXCHANGE_RATE_API_URL: z.string().min(1),
 });
 
 const cleanEnv = Object.fromEntries(

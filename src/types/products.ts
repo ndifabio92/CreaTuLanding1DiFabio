@@ -10,4 +10,6 @@ export interface Product {
   stock: number;
   isNew: boolean;
   brands: Brands;
+  color?: string[];
+  size?: string[];
 }

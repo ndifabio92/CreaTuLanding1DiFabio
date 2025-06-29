@@ -1,3 +1,4 @@
+import { getUsdToArsRate } from "../services/externals/exchangeRate.service";
 import { getProductByIdFromFirestore } from "../services/products.service";
 import { Product } from "../types/products";
 
@@ -8,7 +9,9 @@ export const formatPrice = (price: number) => {
   }).format(price);
 };
 
-export const getCartItemDetails = async (itemId: string): Promise<Product | null> => {
+export const getCartItemDetails = async (
+  itemId: string
+): Promise<Product | null> => {
   return await getProductByIdFromFirestore(itemId);
 };
 
@@ -21,4 +24,8 @@ export const calculateCartTotal = (
     if (!product) return total;
     return total + product.price * item.quantity;
   }, 0);
-}; 
+};
+
+export const calculateCartTotalWithExchangeRate = async () => {
+  return await getUsdToArsRate();
+};

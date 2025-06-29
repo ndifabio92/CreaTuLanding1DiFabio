@@ -2,7 +2,7 @@ import { env } from "../config/env";
 import {
   CartProductWithQuantity,
   WhatsAppMessage,
-} from "../types/app/whatsAppMessage";
+} from "../types/externals/whatsAppMessage";
 
 export const sendWhatsAppMessage = (
   phoneNumber: string,

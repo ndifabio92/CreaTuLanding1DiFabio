@@ -5,9 +5,12 @@ import WhatsAppButton from "../../components/whastApp/WhatsAppButton";
 import Cart from "../cart";
 import { useCart } from "../../hooks/useCart";
 import { generateWhatsAppMessage } from "../../shared/whatsappUtils";
-import { getCartItemDetails } from "../../shared/cartUtils";
+import {
+  calculateCartTotalWithExchangeRate,
+  getCartItemDetails,
+} from "../../shared/cartUtils";
 import { useState, useEffect } from "react";
-import { CartProductWithQuantity } from "../../types/app/whatsAppMessage";
+import { CartProductWithQuantity } from "../../types/externals/whatsAppMessage";
 import { checkoutStyles } from "./checkout.styles";
 
 const validationSchema = Yup.object({
@@ -30,11 +33,14 @@ const Checkout = () => {
     []
   );
   const [loading, setLoading] = useState(false);
+  const [exchange, setExchange] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       const products: CartProductWithQuantity[] = [];
+      const getExchangeRate = await calculateCartTotalWithExchangeRate();
+
       for (const item of cartItems) {
         const product = await getCartItemDetails(item.id);
         if (product) {
@@ -42,6 +48,7 @@ const Checkout = () => {
         }
       }
       setCartProducts(products);
+      setExchange(getExchangeRate);
     };
     if (cartItems.length > 0) {
       fetchProducts();
@@ -140,6 +147,7 @@ const Checkout = () => {
               cartProducts.map(({ product }) => [product.id, product])
             )}
             externalLoading={loading}
+            exchangeRate={exchange}
           />
         </Box>
       </Box>
