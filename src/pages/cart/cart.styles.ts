@@ -1,9 +1,9 @@
 export const cartStyles = {
   container: {
-    pb: 4,
+    // pb: 4,
   },
   popoverList: {
-    maxHeight: 300,
+    // maxHeight: 300,
     overflow: "auto",
   },
   listItem: {
@@ -38,6 +38,19 @@ export const cartStyles = {
     textTransform: "capitalize",
     mb: 0.5,
   }),
+  optionsBox: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 0.5,
+    mt: 0.5,
+  },
+  optionChip: {
+    fontSize: "0.75rem",
+    height: "20px",
+    "& .MuiChip-label": {
+      px: 1,
+    },
+  },
   controlsBox: {
     display: "flex",
     justifyContent: "space-between",
@@ -95,22 +108,17 @@ export const cartStyles = {
     fontWeight: "bold",
   },
   dialogPaper: {
-    borderRadius: 1.5,
-    boxShadow: 3,
-    m: 1,
+    borderRadius: 2,
   },
   dialogContent: {
     p: 2,
   },
   popoverPaper: {
-    maxWidth: { xs: "95vw", sm: 400 },
-    minWidth: { xs: 0, sm: 350 },
-    width: { xs: "95vw", sm: 400 },
-    boxSizing: "border-box",
-    borderRadius: 1.5,
-    boxShadow: 3,
+    width: 350,
+    height: "90vh",
+    maxHeight: "100vh",
   },
   popoverContent: {
-    p: { xs: 1, sm: 2 },
+    p: 2,
   },
 };

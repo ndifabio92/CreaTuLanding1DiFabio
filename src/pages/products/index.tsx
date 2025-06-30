@@ -17,12 +17,14 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useEffect, useState } from "react";
 import { useCart } from "../../hooks/useCart";
+import { useProductOptions } from "../../hooks/useProductOptions";
 import { Product } from "../../types/products";
 import { getProductByIdFromFirestore } from "../../services/products.service";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 import { formatPrice } from "../../shared/cartUtils";
 import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
 import ImageCarousel from "../../components/carousel/ImageCarousel";
+import ProductOptions from "../../components/product/options/Options";
 import { productsStyles } from "./products.styles";
 
 const Products = () => {
@@ -34,6 +36,14 @@ const Products = () => {
   const [_error, setError] = useState<string | null>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const {
+    selectedSize,
+    setSelectedSize,
+    selectedColor,
+    setSelectedColor,
+    hasRequiredOptions,
+  } = useProductOptions();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -73,8 +83,10 @@ const Products = () => {
   };
 
   const handleAddToCart = (productId: string) => {
-    addToCart(productId, quantity);
+    addToCart(productId, quantity, selectedSize, selectedColor);
   };
+
+  const canAddToCart = product && hasRequiredOptions(product);
 
   return (
     <Container maxWidth="lg" sx={productsStyles.container}>
@@ -107,6 +119,23 @@ const Products = () => {
               <Typography variant="h6" sx={productsStyles.price}>
                 {product && formatPrice(product.price)}
               </Typography>
+
+              <ProductOptions
+                type="size"
+                options={product?.size || []}
+                selectedValue={selectedSize}
+                onSelect={setSelectedSize}
+                label="Size"
+              />
+
+              <ProductOptions
+                type="color"
+                options={product?.color || []}
+                selectedValue={selectedColor}
+                onSelect={setSelectedColor}
+                label="Color"
+              />
+
               {isMobile ? (
                 <Stack
                   direction="row"
@@ -134,7 +163,7 @@ const Products = () => {
                       startIcon={<ShoppingCartIcon />}
                       sx={productsStyles.mobileButton}
                       onClick={() => product?.id && handleAddToCart(product.id)}
-                      disabled={!product}
+                      disabled={!canAddToCart}
                     >
                       Add
                     </Button>
@@ -169,7 +198,7 @@ const Products = () => {
                       startIcon={<ShoppingCartIcon />}
                       sx={productsStyles.desktopButton}
                       onClick={() => product?.id && handleAddToCart(product.id)}
-                      disabled={!product}
+                      disabled={!canAddToCart}
                     >
                       Add to cart
                     </Button>

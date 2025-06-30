@@ -27,6 +27,7 @@ import {
 import { Product } from "../../types/products";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
+import SelectedOptions from "../../components/product/selected/Selected";
 import { cartStyles } from "./cart.styles";
 
 interface CartProps {
@@ -36,6 +37,7 @@ interface CartProps {
   onClose?: () => void;
   externalCartProducts?: Record<string, Product | null>;
   externalLoading?: boolean;
+  exchangeRate?: number | null;
 }
 
 const Cart = ({
@@ -45,6 +47,7 @@ const Cart = ({
   onClose,
   externalCartProducts,
   externalLoading,
+  exchangeRate,
 }: CartProps) => {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
   const navigate = useNavigate();
@@ -56,28 +59,43 @@ const Cart = ({
 
   const open = isPopover ? Boolean(anchorEl) : false;
 
-  // Usar los productos externos si están presentes
+  // evita consumir nuevamente la api
   const productsToUse = externalCartProducts ?? cartProducts;
   const loadingToUse = externalLoading ?? loading;
 
   useEffect(() => {
-    if (externalCartProducts !== undefined) return; // Si recibo productos externos, no hago fetch
+    if (externalCartProducts !== undefined) return; // si hay productos los usa
     const fetchProducts = async () => {
       setLoading(true);
       const productsMap: Record<string, Product | null> = { ...cartProducts };
-      const missingIds = cartItems.filter((item) => !productsMap[item.id]);
+
+      const extractProductId = (cartItemId: string): string => {
+        return cartItemId.split("_")[0];
+      };
+
+      const missingIds = cartItems.filter((item) => {
+        const productId = item.productId || extractProductId(item.id);
+        return !productsMap[productId];
+      });
+
       await Promise.all(
         missingIds.map(async (item) => {
           const product = await getCartItemDetails(item.id);
-          productsMap[item.id] = product;
+          const productId = item.productId || extractProductId(item.id);
+          productsMap[productId] = product;
         })
       );
 
       Object.keys(productsMap).forEach((id) => {
-        if (!cartItems.find((item) => item.id === id)) {
+        const hasItem = cartItems.some((item) => {
+          const productId = item.productId || extractProductId(item.id);
+          return productId === id;
+        });
+        if (!hasItem) {
           delete productsMap[id];
         }
       });
+
       setCartProducts(productsMap);
       setLoading(false);
     };
@@ -114,12 +132,16 @@ const Cart = ({
         ) : (
           <List sx={isPopover ? cartStyles.popoverList : undefined}>
             {cartItems.map((item) => {
-              const productDetails = productsToUse[item.id];
+              const extractProductId = (cartItemId: string): string => {
+                return cartItemId.split("_")[0];
+              };
+
+              const productId = item.productId || extractProductId(item.id);
+              const productDetails = productsToUse[productId];
               if (!productDetails) return null;
 
               return (
                 <ListItem key={item.id} sx={cartStyles.listItem}>
-                  {/* Información del producto */}
                   <Box sx={cartStyles.productInfoBox}>
                     <Avatar
                       src={
@@ -140,12 +162,16 @@ const Cart = ({
                       <Typography variant="body2" color="text.secondary">
                         {formatPrice(productDetails.price)}
                       </Typography>
+
+                      <SelectedOptions
+                        selectedSize={item.selectedSize}
+                        selectedColor={item.selectedColor}
+                        isPopover={isPopover}
+                      />
                     </Box>
                   </Box>
 
-                  {/* Controles distribuidos en toda la card */}
                   <Box sx={cartStyles.controlsBox}>
-                    {/* Controles de cantidad */}
                     <Box sx={cartStyles.quantityControlsBox}>
                       <IconButton
                         size="small"
@@ -169,7 +195,6 @@ const Cart = ({
                       </IconButton>
                     </Box>
 
-                    {/* Botón eliminar */}
                     <Box sx={cartStyles.deleteButtonBox}>
                       <IconButton
                         size="small"
@@ -181,7 +206,6 @@ const Cart = ({
                       </IconButton>
                     </Box>
 
-                    {/* Precio total del item */}
                     <Box sx={cartStyles.priceBox}>
                       <Typography
                         variant={isPopover ? "body2" : "body1"}
@@ -218,10 +242,17 @@ const Cart = ({
           <>
             <Divider sx={cartStyles.divider} />
             <Box sx={cartStyles.totalBox}>
-              <Typography variant="h6" sx={cartStyles.totalTypography}>
+              <Typography variant="h5" sx={cartStyles.totalTypography}>
                 Total: {formatPrice(calculateTotal())}
               </Typography>
             </Box>
+            {exchangeRate && (
+              <Box sx={cartStyles.totalBox}>
+                <Typography variant="h5" sx={cartStyles.totalTypography}>
+                  Total ARS: {formatPrice(calculateTotal() * exchangeRate)}
+                </Typography>
+              </Box>
+            )}
             {!isCheckout && (
               <Button
                 variant="contained"
@@ -258,7 +289,6 @@ const Cart = ({
         </Dialog>
       );
     }
-    // Popover en desktop
     return (
       <Popover
         open={open}
