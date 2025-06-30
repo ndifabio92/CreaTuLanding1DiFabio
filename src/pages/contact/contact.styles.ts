@@ -1,8 +1,7 @@
 export const contactStyles = {
   mainBox: {
-    maxWidth: 500,
+    maxWidth: 600,
     mx: "auto",
-    mt: 6,
     p: { xs: 2, sm: 3 },
   },
   contactItemBox: {

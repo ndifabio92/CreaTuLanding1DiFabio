@@ -1,10 +1,16 @@
 import { lazy } from "react";
 import { Route } from "../types/app/route";
 
-const Home = lazy(() => import("../pages/home"));
-const Brands = lazy(() => import("../pages/brands"));
-
 export const routes: Route[] = [
-  { path: "/", name: "Inicio", element: Home },
-  { path: '/brands', name: "Marcas", element: Brands },
+  { path: "/", name: "Inicio", element: lazy(() => import("../pages/home")) },
+  {
+    path: "/brands",
+    name: "Marcas",
+    element: lazy(() => import("../pages/brands")),
+  },
+  {
+    path: "contact",
+    name: "Contacto",
+    element: lazy(() => import("../pages/contact")),
+  },
 ];
