@@ -1,11 +1,12 @@
 import { Box, Typography } from "@mui/material";
-import { ContactForm } from "./ContactForm";
+
 import { contactStyles } from "./contact.styles";
+import ContactForm from "./ContactForm";
 
 const Contact = () => {
   return (
     <Box sx={contactStyles.mainBox}>
-      <Typography variant="h5" fontWeight={600} mb={2}>
+      <Typography variant="h4" sx={contactStyles.title}>
         Contacto
       </Typography>
       <Typography mb={2}>

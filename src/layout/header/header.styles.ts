@@ -24,6 +24,7 @@ export const headerStyles = {
     fontWeight: 600,
     letterSpacing: "0.5px",
     display: { xs: "none", sm: "block" },
+    cursor: "pointer",
   },
   navigationBox: {
     display: { xs: "none", md: "flex" },

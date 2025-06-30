@@ -121,7 +121,7 @@ const Cart = ({
   };
 
   const renderCartContent = () => (
-    <Container sx={cartStyles.container}>
+    <Container sx={cartStyles.container(isPopover)}>
       <Box>
         {!isCheckout && !isPopover && <BackBreadcrumb />}
         <Typography variant="h5" gutterBottom>

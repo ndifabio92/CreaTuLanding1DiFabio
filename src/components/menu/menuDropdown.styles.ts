@@ -58,14 +58,7 @@ export const menuDropdownStyles = {
     my: 0.5,
     transition: "background 0.2s",
     "&:hover": {
-      backgroundColor: "primary.light",
-      color: "primary.main",
+      backgroundColor: "rgba(0,0,0,0.04)",
     },
-    boxShadow: 0,
   }),
-  menuItemBox: {
-    display: "flex",
-    alignItems: "center",
-    gap: 1,
-  },
 };

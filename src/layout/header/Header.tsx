@@ -47,7 +47,12 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={headerStyles.logo}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={headerStyles.logo}
+            onClick={() => navigate("/")}
+          >
             Nando CWS
           </Typography>
         </Box>

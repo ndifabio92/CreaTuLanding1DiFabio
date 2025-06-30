@@ -143,10 +143,7 @@ const MenuDropdown: FC<MenuDropdownProps> = ({
             sx={menuDropdownStyles.menuItem(idx, items.length)}
             divider={idx !== items.length - 1}
           >
-            <Box sx={menuDropdownStyles.menuItemBox}>
-              <span style={{ fontSize: 18 }}>🏷️</span>
-              {item.name}
-            </Box>
+            <Box>{item.name}</Box>
           </MenuItem>
         ))}
       </Menu>

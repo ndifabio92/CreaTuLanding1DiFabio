@@ -1,5 +1,5 @@
 import React from "react";
-import { useFormik } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -7,110 +7,128 @@ import EmailIcon from "@mui/icons-material/Email";
 import { env } from "../../config/env";
 import { openWhatsAppWithMessage } from "../../shared/whatsappUtils";
 import { generateMailtoLink } from "../../shared/emailUtils";
+import { contactStyles } from "./contact.styles";
 
 const validationSchema = Yup.object({
-  nombre: Yup.string().required("El nombre es obligatorio"),
-  apellido: Yup.string().required("El apellido es obligatorio"),
-  telefono: Yup.string().required("El teléfono es obligatorio"),
-  consulta: Yup.string().required("La consulta es obligatoria"),
+  name: Yup.string().required("Requerido"),
+  lastName: Yup.string().required("Requerido"),
+  phoneNumber: Yup.string().required("Requerido"),
+  inquiry: Yup.string().required("Requerido"),
 });
 
-export const ContactForm: React.FC = () => {
-  const formik = useFormik({
-    initialValues: {
-      nombre: "",
-      apellido: "",
-      telefono: "",
-      consulta: "",
-    },
-    validationSchema,
-    onSubmit: () => {}, // No submit, handled by buttons
-  });
+const initialValues = {
+  name: "",
+  lastName: "",
+  phoneNumber: "",
+  inquiry: "",
+};
 
-  const handleWhatsApp = () => {
-    const { nombre, apellido, telefono, consulta } = formik.values;
-    const message = `Hola, mi nombre es ${nombre} ${apellido}. Teléfono: ${telefono}.\nConsulta: ${consulta}`;
+const ContactForm: React.FC = () => {
+  const handleWhatsApp = (values: typeof initialValues) => {
+    const { name, lastName, phoneNumber, inquiry } = values;
+    const message = `Hello, my name is ${name} ${lastName}. Phone: ${phoneNumber}.\nInquiry: ${inquiry}`;
     openWhatsAppWithMessage(message);
   };
 
-  const handleEmail = () => {
-    const { nombre, apellido, telefono, consulta } = formik.values;
-    const subject = "Consulta desde formulario web";
-    const body = `Nombre: ${nombre} ${apellido}\nTeléfono: ${telefono}\nConsulta: ${consulta}`;
+  const handleEmail = (values: typeof initialValues) => {
+    const { name, lastName, phoneNumber, inquiry } = values;
+    const subject = "Inquiry from web form";
+    const body = `Name: ${name} ${lastName}\nPhone: ${phoneNumber}\nInquiry: ${inquiry}`;
     const mailto = generateMailtoLink(env.VITE_EMAIL, subject, body);
     window.open(mailto);
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={formik.handleSubmit}
-      sx={{ maxWidth: 400, mx: "auto", mt: 4 }}
-    >
-      <Stack spacing={2}>
-        <TextField
-          label="Nombre"
-          name="nombre"
-          value={formik.values.nombre}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.nombre && Boolean(formik.errors.nombre)}
-          helperText={formik.touched.nombre && formik.errors.nombre}
-          fullWidth
-        />
-        <TextField
-          label="Apellido"
-          name="apellido"
-          value={formik.values.apellido}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.apellido && Boolean(formik.errors.apellido)}
-          helperText={formik.touched.apellido && formik.errors.apellido}
-          fullWidth
-        />
-        <TextField
-          label="Teléfono"
-          name="telefono"
-          value={formik.values.telefono}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.telefono && Boolean(formik.errors.telefono)}
-          helperText={formik.touched.telefono && formik.errors.telefono}
-          fullWidth
-        />
-        <TextField
-          label="Consulta"
-          name="consulta"
-          value={formik.values.consulta}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.consulta && Boolean(formik.errors.consulta)}
-          helperText={formik.touched.consulta && formik.errors.consulta}
-          fullWidth
-          multiline
-          minRows={4}
-        />
-        <Stack direction="row" spacing={2} justifyContent="center">
-          <Button
-            variant="contained"
-            color="success"
-            startIcon={<WhatsAppIcon />}
-            onClick={handleWhatsApp}
-            disabled={!formik.isValid || !formik.dirty}
-          >
-            Enviar por WhatsApp
-          </Button>
-          <Button
-            variant="contained"
-            color="warning"
-            startIcon={<EmailIcon />}
-            onClick={handleEmail}
-            disabled={!formik.isValid || !formik.dirty}
-          >
-            Enviar por Email
-          </Button>
-        </Stack>
-      </Stack>
+    <Box sx={contactStyles.contactForm}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={() => {}}
+        validateOnMount
+      >
+        {({
+          errors,
+          touched,
+          values,
+          handleChange,
+          handleBlur,
+          isValid,
+          dirty,
+        }) => (
+          <Form>
+            <Stack spacing={2}>
+              <Field
+                as={TextField}
+                label="Nombre"
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.name && Boolean(errors.name)}
+                helperText={touched.name && errors.name}
+                fullWidth
+              />
+              <Field
+                as={TextField}
+                label="Apellido"
+                name="lastName"
+                value={values.lastName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.lastName && Boolean(errors.lastName)}
+                helperText={touched.lastName && errors.lastName}
+                fullWidth
+              />
+              <Field
+                as={TextField}
+                label="Numero de Teléfono"
+                name="phoneNumber"
+                value={values.phoneNumber}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.phoneNumber && Boolean(errors.phoneNumber)}
+                helperText={touched.phoneNumber && errors.phoneNumber}
+                fullWidth
+              />
+              <Field
+                as={TextField}
+                label="Consulta"
+                name="inquiry"
+                value={values.inquiry}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.inquiry && Boolean(errors.inquiry)}
+                helperText={touched.inquiry && errors.inquiry}
+                fullWidth
+                multiline
+                minRows={4}
+              />
+              <Stack direction="row" spacing={2} justifyContent="center">
+                <Button
+                  variant="contained"
+                  color="success"
+                  startIcon={<WhatsAppIcon />}
+                  onClick={() => handleWhatsApp(values)}
+                  disabled={!isValid || !dirty}
+                >
+                  WhatsApp
+                </Button>
+                <Button
+                  variant="contained"
+                  color="warning"
+                  startIcon={<EmailIcon />}
+                  onClick={() => handleEmail(values)}
+                  disabled={!isValid || !dirty}
+                >
+                  Email
+                </Button>
+              </Stack>
+            </Stack>
+          </Form>
+        )}
+      </Formik>
     </Box>
   );
 };
+
+export default ContactForm;

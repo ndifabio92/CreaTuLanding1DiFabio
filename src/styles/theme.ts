@@ -129,16 +129,16 @@ const theme = createTheme({
           "& .MuiOutlinedInput-root": {
             borderRadius: 8,
             "&:hover fieldset": {
-              borderColor: "#006989",
+              borderColor: "#649575",
               borderWidth: "2px",
             },
             "&.Mui-focused fieldset": {
-              borderColor: "#005C78",
+              borderColor: "#649575",
               borderWidth: "2px",
             },
           },
           "& .MuiInputLabel-outlined.Mui-focused": {
-            color: "#005C78",
+            color: "#649575",
           },
         },
       },

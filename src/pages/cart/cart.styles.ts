@@ -1,7 +1,7 @@
 export const cartStyles = {
-  container: {
-    // pb: 4,
-  },
+  container: (_isPopover: boolean) => ({
+    pb: _isPopover ? 0 : 4,
+  }),
   popoverList: {
     // maxHeight: 300,
     overflow: "auto",

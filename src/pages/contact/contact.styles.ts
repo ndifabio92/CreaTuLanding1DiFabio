@@ -2,7 +2,7 @@ export const contactStyles = {
   mainBox: {
     maxWidth: 600,
     mx: "auto",
-    p: { xs: 2, sm: 3 },
+    pb: 4,
   },
   contactItemBox: {
     display: "flex",
@@ -36,5 +36,14 @@ export const contactStyles = {
   instagramIcon: {
     color: "white",
     fontSize: 48,
+  },
+  contactForm: {
+    maxWidth: 400,
+    mx: "auto",
+    mt: 4,
+  },
+  title: {
+    mb: 2,
+    fontWeight: 700,
   },
 };

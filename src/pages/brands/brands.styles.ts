@@ -1,6 +1,7 @@
 export const brandsStyles = {
   container: {
-    // py: 4,
+    // mt: 2,
+    mb: 4,
   },
   title: {
     mb: 2,
