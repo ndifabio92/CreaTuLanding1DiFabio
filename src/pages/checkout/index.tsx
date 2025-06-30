@@ -12,6 +12,7 @@ import {
 import { useState, useEffect } from "react";
 import { CartProductWithQuantity } from "../../types/externals/whatsAppMessage";
 import { checkoutStyles } from "./checkout.styles";
+import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Requerido"),
@@ -60,6 +61,7 @@ const Checkout = () => {
 
   return (
     <Container sx={checkoutStyles.container}>
+      <BackBreadcrumb />
       <Box sx={checkoutStyles.mainBox}>
         <Box sx={checkoutStyles.formBox}>
           <Typography variant="h5" gutterBottom>

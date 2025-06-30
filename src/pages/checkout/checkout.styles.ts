@@ -30,22 +30,16 @@ export const checkoutStyles = {
   customTextField: {
     "& .MuiOutlinedInput-root": {
       "&:hover fieldset": {
-        borderColor: "#ff6b35", // Cambia este color por el que necesites
+        borderColor: "#ff6b35",
       },
       "&.Mui-focused fieldset": {
-        borderColor: "#ff6b35", // Color del borde cuando está enfocado
-        borderWidth: "2px", // Opcional: puedes cambiar el grosor del borde
+        borderColor: "#ff6b35",
+        borderWidth: "2px",
       },
     },
     "& .MuiInputLabel-root": {
       "&.Mui-focused": {
-        color: "#ff6b35", // Color del label cuando está enfocado
-      },
-    },
-    // Opcional: personalizar también el color del texto
-    "& .MuiOutlinedInput-input": {
-      "&:focus": {
-        // color: '#333', // Color del texto cuando está enfocado
+        color: "#ff6b35",
       },
     },
   },

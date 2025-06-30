@@ -6,9 +6,7 @@ import ContactForm from "./ContactForm";
 const Contact = () => {
   return (
     <Box sx={contactStyles.mainBox}>
-      <Typography variant="h4" sx={contactStyles.title}>
-        Contacto
-      </Typography>
+      <Typography variant="h5">Contacto</Typography>
       <Typography mb={2}>
         Complete el formulario para enviar su consulta por WhatsApp o Email.
       </Typography>

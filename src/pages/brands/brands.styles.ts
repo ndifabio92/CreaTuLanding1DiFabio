@@ -5,7 +5,7 @@ export const brandsStyles = {
   },
   title: {
     mb: 2,
-    fontWeight: 700,
+    // fontWeight: 700,
   },
   brandsBox: {
     display: "flex",

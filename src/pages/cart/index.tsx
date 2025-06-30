@@ -29,6 +29,7 @@ import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
 import SelectedOptions from "../../components/product/selected/Selected";
 import { cartStyles } from "./cart.styles";
+import theme from "../../styles/theme";
 
 interface CartProps {
   isPopover?: boolean;
@@ -55,7 +56,7 @@ const Cart = ({
     Record<string, Product | null>
   >({});
   const [loading, setLoading] = useState(false);
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const open = isPopover ? Boolean(anchorEl) : false;
 
@@ -122,8 +123,8 @@ const Cart = ({
 
   const renderCartContent = () => (
     <Container sx={cartStyles.container(isPopover)}>
+      {!isCheckout && !isPopover && <BackBreadcrumb />}
       <Box>
-        {!isCheckout && !isPopover && <BackBreadcrumb />}
         <Typography variant="h5" gutterBottom>
           {isCheckout ? "Detalle de la Orden" : "Carrito de Compras"}
         </Typography>
