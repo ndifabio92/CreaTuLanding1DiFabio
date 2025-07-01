@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { getAllBrandsFromFirestore } from "../../services/brands.service";
 import { getProductsByBrandName } from "../../services/products.service";
-import { Brands } from "../../types/brands";
+import { Brands as BrandsType } from "../../types/brands";
 import { Product } from "../../types/products";
 import CardComponent from "../../components/cards/CardComponent";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
@@ -18,8 +18,8 @@ import { brandsStyles } from "./brands.styles";
 import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
 import theme from "../../styles/theme";
 
-const BrandsPage = () => {
-  const [brands, setBrands] = useState<Brands[]>([]);
+const Brands = () => {
+  const [brands, setBrands] = useState<BrandsType[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
@@ -96,4 +96,4 @@ const BrandsPage = () => {
   );
 };
 
-export default BrandsPage;
+export default Brands;

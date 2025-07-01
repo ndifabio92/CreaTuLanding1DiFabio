@@ -18,20 +18,31 @@ import { getAllBrandsFromFirestore } from "../../services/brands.service";
 import { routes } from "../../routes/routes";
 import MenuDropdown from "../../components/menu/MenuDropdown";
 import CartIcon from "../../components/cart/CartIcon";
+import { getAllCategoriesFromFirestore } from "../../services/categories.service";
+import { Categories } from "../../types/categories";
 
 const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
   const theme = useTheme();
   const [brands, setBrands] = useState<Brands[]>([]);
+  const [categories, setCategories] = useState<Categories[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     getAllBrandsFromFirestore().then((data: Brands[]) => {
       setBrands(data.filter((b) => b.active));
     });
+
+    getAllCategoriesFromFirestore().then((data: Categories[]) => {
+      setCategories(data.filter((c) => c.active));
+    });
   }, []);
 
   const handleBrandClick = (brandName: string) => {
     navigate(`/brands?brand=${encodeURIComponent(brandName)}`);
+  };
+
+  const handleCategoriesClick = (categoryName: string) => {
+    navigate(`/categories?category=${encodeURIComponent(categoryName)}`);
   };
 
   return (
@@ -60,14 +71,22 @@ const Header: FC<AppHeaderProps> = ({ handleDrawerToggle }) => {
         <Box sx={headerStyles.navigationBox}>
           <List sx={headerStyles.navigationList}>
             {routes.map((item) => {
-              if (item.name === "Marcas") {
+              if (item.name === "Marcas" || item.name === "Categorias") {
                 return (
                   <MenuDropdown
                     key={item.path}
                     label={item.name}
-                    items={brands.map((b) => ({ id: b.id, name: b.name }))}
+                    items={
+                      item.name === "Marcas"
+                        ? brands.map((b) => ({ id: b.id, name: b.name }))
+                        : categories.map((b) => ({ id: b.id, name: b.name }))
+                    }
                     basePath={item.path}
-                    onItemClick={(brand) => handleBrandClick(brand.name)}
+                    onItemClick={
+                      item.name === "Marcas"
+                        ? (brand) => handleBrandClick(brand.name)
+                        : (category) => handleCategoriesClick(category.name)
+                    }
                   />
                 );
               }

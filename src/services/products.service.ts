@@ -44,6 +44,21 @@ export const getProductsByBrandName = async (
   })) as Product[];
 };
 
+export const getProductsByCategoriesName = async (
+  categoryName: string
+): Promise<Product[]> => {
+  const productsCol = collection(db, "products");
+  const q = query(
+    productsCol,
+    where("category", "array-contains", categoryName)
+  );
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Product[];
+};
+
 export const getProductsByActiveBrand = async (
   brandId: string
 ): Promise<Product[]> => {

@@ -7,6 +7,8 @@ import { Brands } from "../../types/brands";
 import { getAllBrandsFromFirestore } from "../../services/brands.service";
 import MenuDropdown from "../../components/menu/MenuDropdown";
 import { routes } from "../../routes/routes";
+import { getAllCategoriesFromFirestore } from "../../services/categories.service";
+import { Categories } from "../../types/categories";
 
 export const Sidebar: FC<SidebarProps> = ({
   mobileOpen,
@@ -18,10 +20,16 @@ export const Sidebar: FC<SidebarProps> = ({
 
   const [brands, setBrands] = useState<Brands[]>([]);
   const [brandsOpen, setBrandsOpen] = useState(false);
+  const [categories, setCategories] = useState<Brands[]>([]);
+  const [categoryOpen, setCategoryOpen] = useState(false);
 
   useEffect(() => {
     getAllBrandsFromFirestore().then((data: Brands[]) => {
       setBrands(data.filter((b) => b.active));
+    });
+
+    getAllCategoriesFromFirestore().then((data: Categories[]) => {
+      setCategories(data.filter((b) => b.active));
     });
   }, []);
 
@@ -64,6 +72,28 @@ export const Sidebar: FC<SidebarProps> = ({
                     handleDrawerToggle();
                   }}
                   paramKey="brand"
+                />
+              );
+            }
+            if (item.name === "Categorias") {
+              return (
+                <MenuDropdown
+                  key={item.path}
+                  label={item.name}
+                  items={categories.map((b) => ({ id: b.id, name: b.name }))}
+                  basePath={item.path}
+                  isSidebar
+                  isActive={isActive(item.path)}
+                  open={categoryOpen}
+                  setOpen={setCategoryOpen}
+                  handleDrawerToggle={handleDrawerToggle}
+                  onItemClick={(category) => {
+                    navigate(
+                      `/categories?category=${encodeURIComponent(category.name)}`
+                    );
+                    handleDrawerToggle();
+                  }}
+                  paramKey="category"
                 />
               );
             }
