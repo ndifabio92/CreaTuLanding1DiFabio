@@ -9,6 +9,11 @@ export const routes: Route[] = [
     element: lazy(() => import("../pages/brands")),
   },
   {
+    path: "/categories",
+    name: "Categorias",
+    element: lazy(() => import("../pages/categories")),
+  },
+  {
     path: "contact",
     name: "Contacto",
     element: lazy(() => import("../pages/contact")),
