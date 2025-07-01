@@ -26,4 +26,7 @@ export const categoriesStyles = {
     gap: 2,
     justifyContent: "center",
   },
+  breadcrumb: {
+    mb: 2,
+  },
 };

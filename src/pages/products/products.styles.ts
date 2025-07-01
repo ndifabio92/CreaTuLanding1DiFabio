@@ -76,4 +76,16 @@ export const productsStyles = {
     width: "100%",
     gap: 1,
   },
+  newBadge: {
+    backgroundColor: "#FFEB3B",
+    color: "#222",
+    fontWeight: 700,
+    fontSize: 13,
+    marginTop: 1,
+    borderRadius: 0.5,
+    boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
+    "& .MuiChip-label": {
+      padding: "2px 10px",
+    },
+  },
 };

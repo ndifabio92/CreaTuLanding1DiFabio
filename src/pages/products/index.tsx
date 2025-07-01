@@ -113,6 +113,9 @@ const Products = () => {
               <Typography variant="h5">
                 {product?.name.toLowerCase()}
               </Typography>
+              {product?.isNew && (
+                <Chip label="NUEVO" size="small" sx={productsStyles.newBadge} />
+              )}
               <Typography variant="body1" sx={productsStyles.description}>
                 {product?.description}
               </Typography>

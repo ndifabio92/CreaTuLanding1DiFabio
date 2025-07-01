@@ -3,10 +3,7 @@ import { Categories } from "../../types/categories";
 import { Product } from "../../types/products";
 import { useSearchParams } from "react-router";
 import {
-  Box,
-  Button,
   Container,
-  Divider,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -17,13 +14,14 @@ import BackBreadcrumb from "../../components/navigation/BackBreadcrumb";
 import CardComponent from "../../components/cards/CardComponent";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 import { categoriesStyles } from "./categories.styles";
+import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
 
 const Category = () => {
-  const [categories, setCategories] = useState<Categories[]>([]);
+  const [_categories, setCategories] = useState<Categories[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, _setSearchParams] = useSearchParams();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
@@ -48,9 +46,6 @@ const Category = () => {
     fetchProducts();
   }, [searchParams]);
 
-  const handleCategoryClick = (categoryName: string) => {
-    setSearchParams({ category: categoryName });
-  };
 
   return (
     <Container sx={categoriesStyles.container}>
@@ -58,21 +53,12 @@ const Category = () => {
       <Typography variant="h5" sx={categoriesStyles.title}>
         Categorias
       </Typography>
-      <Box sx={categoriesStyles.brandsBox}>
-        {categories.map((category) => (
-          <Button
-            key={category.id}
-            variant={
-              selectedCategory === category.name ? "contained" : "outlined"
-            }
-            onClick={() => handleCategoryClick(category.name)}
-            sx={categoriesStyles.brandButton}
-          >
-            {category.name}
-          </Button>
-        ))}
-      </Box>
-      <Divider sx={categoriesStyles.divider} />
+      <Breadcrumbs
+        items={[
+          { label: "Categoría" },
+          selectedCategory ? { label: selectedCategory } : { label: "" },
+        ]}
+      />
       {loading ? (
         <LoadingScreen />
       ) : products.length === 0 ? (
@@ -90,6 +76,7 @@ const Category = () => {
               image={product.urls[0]}
               stock={product.stock}
               isNew={product.isNew}
+              price={product.price}
             />
           ))}
         </Container>

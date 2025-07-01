@@ -3,54 +3,46 @@ import {
   Card,
   CardContent,
   Typography,
-  Button,
   CardActions,
   CardMedia,
+  Chip,
 } from "@mui/material";
 import { useNavigate } from "react-router";
 import { cardStyles } from "./card.styles";
 import SearchIcon from "@mui/icons-material/Search";
-import { useCart } from "../../hooks/useCart";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { formatPrice } from "../../shared/cartUtils";
 
 interface Props {
-  id: string;
+  id?: string;
   name: string;
   path: string;
   image: string;
-  stock: number;
+  stock?: number;
   isNew: boolean;
+  price: number;
 }
 
-const CardComponent: React.FC<Props> = ({ id, name, path, image, stock, isNew }) => {
+const CardComponent: React.FC<Props> = ({
+  // id,
+  name,
+  path,
+  image,
+  // stock,
+  isNew,
+  price,
+}) => {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  // const { addToCart } = useCart();
   return (
-    <Card sx={cardStyles}>
+    <Card sx={cardStyles.card}>
       <CardContent>
-        {isNew && (
-          <div
-            style={{
-              display: "inline-block",
-              marginBottom: 8,
-              background: "#FFEB3B",
-              color: "#222",
-              fontWeight: 700,
-              fontSize: 13,
-              borderRadius: 4,
-              padding: "2px 10px",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
-            }}
-          >
-            NUEVO
-          </div>
-        )}
         <Typography variant="h5" component="div">
           {name.toLowerCase()}
         </Typography>
       </CardContent>
+      {isNew && <Chip label="NUEVO" size="small" sx={cardStyles.newBadge} />}
       <CardMedia
         onClick={() => navigate(path)}
         component="img"
@@ -70,17 +62,23 @@ const CardComponent: React.FC<Props> = ({ id, name, path, image, stock, isNew })
           padding: "16px",
         }}
       >
-        {
-          stock > 0 && (
+        {/* {stock > 0 && (
           <Button
             variant="contained"
             color="primary"
             startIcon={<ShoppingCartIcon />}
-            onClick={() => addToCart(id, 1)}>
+            onClick={() => addToCart(id, 1)}
+          >
             Add To Cart
           </Button>
-          )
-        }
+        )} */}
+        <Typography
+          variant="body1"
+          color="text.main"
+          sx={{ fontWeight: 600, fontSize: "1.2rem" }}
+          >
+          {formatPrice(price)}
+        </Typography>
         <Tooltip title="Ver detalle">
           <IconButton
             size="small"
@@ -90,7 +88,6 @@ const CardComponent: React.FC<Props> = ({ id, name, path, image, stock, isNew })
             <SearchIcon fontSize="medium" />
           </IconButton>
         </Tooltip>
-
       </CardActions>
     </Card>
   );

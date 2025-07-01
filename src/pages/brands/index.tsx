@@ -88,6 +88,7 @@ const Brands = () => {
               image={product.urls[0]}
               stock={product.stock}
               isNew={product.isNew}
+              price={product.price}
             />
           ))}
         </Container>
