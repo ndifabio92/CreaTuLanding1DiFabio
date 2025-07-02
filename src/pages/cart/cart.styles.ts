@@ -23,6 +23,7 @@ export const cartStyles = {
     width: _isPopover ? 50 : 80,
     height: _isPopover ? 50 : 80,
     flexShrink: 0,
+    borderRadius: 0,
   }),
   productDetailsBox: {
     flex: 1,

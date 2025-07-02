@@ -45,18 +45,20 @@ const Home = () => {
 
   return (
     <Container sx={homeStyles.mainContainer}>
-      {products.map((product) => (
-        <CardComponent
-          key={product.id}
-          id={product.id}
-          name={product.name}
-          path={`/products/${product.id}`}
-          image={product.urls[0]}
-          stock={product.stock}
-          isNew={product.isNew}
-          price={product.price}
-        />
-      ))}
+      <Box sx={homeStyles.productsGrid}>
+        {products.map((product) => (
+          <CardComponent
+            key={product.id}
+            id={product.id}
+            name={product.name}
+            path={`/products/${product.id}`}
+            image={product.urls[0]}
+            stock={product.stock}
+            isNew={product.isNew}
+            price={product.price}
+          />
+        ))}
+      </Box>
     </Container>
   );
 };

@@ -49,7 +49,7 @@ const CardComponent: React.FC<Props> = ({
         image={image}
         title={name}
         sx={{
-          height: 200,
+          height: "100%",
           objectFit: "cover",
           width: "100%",
         }}
