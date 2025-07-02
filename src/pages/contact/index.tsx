@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 
 import { contactStyles } from "./contact.styles";
-import ContactForm from "./ContactForm";
+import { ContactForm } from "./ContactForm";
 
 const Contact = () => {
   return (
