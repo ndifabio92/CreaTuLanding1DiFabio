@@ -49,7 +49,9 @@ export const generateWhatsAppMessage = (
 
   const productList = products
     .map((p, i) => {
-      const cartItem = cartItems.find((item) => item.id === p.product.id);
+      const cartItem = cartItems.find(
+        (item) => item.productId === p.product.id
+      );
       const sizeInfo = cartItem?.selectedSize
         ? ` | Size: ${cartItem.selectedSize}`
         : "";
